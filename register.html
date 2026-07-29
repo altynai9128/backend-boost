@@ -327,18 +327,31 @@
         }
 
         // 2. Создаем профиль в таблице profiles
-        const { error: profileError } = await supabaseClient
+        // Проверяем, есть ли уже такой профиль (на всякий случай)
+        const { data: existingProfile } = await supabaseClient
           .from('profiles')
-          .insert([
-            {
-              id: authData.user.id,
-              email: email,
-              full_name: fullName,
-              country: country,
-              is_paid: false,
-              total_score: 0
-            }
-          ]);
+          .select('id')
+          .eq('id', authData.user.id)
+          .single();
+
+        let profileError = null;
+
+        if (!existingProfile) {
+          // Если профиля нет — создаем
+          const { error: insertError } = await supabaseClient
+            .from('profiles')
+            .insert([
+              {
+                id: authData.user.id,
+                email: email,
+                full_name: fullName,
+                country: country,
+                is_paid: false,
+                total_score: 0
+              }
+            ]);
+          profileError = insertError;
+        }
 
         if (profileError) {
           console.error('Ошибка создания профиля:', profileError);
