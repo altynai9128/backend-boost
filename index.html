@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Backend Boost — стань бэкенд-разработчиком за 3 месяца</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #fafafa;
+      color: #1a1a2e;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      background: white;
+      padding: 20px 0;
+      border-bottom: 1px solid #f0e6ff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    header .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #4a4a6a;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #8B5CF6;
+    }
+
+    .btn {
+      padding: 12px 32px;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      color: white;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #8B5CF6;
+      border: 2px solid #8B5CF6;
+    }
+
+    .btn-secondary:hover {
+      background: #f5f0ff;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 100px 0 80px;
+      background: linear-gradient(135deg, #faf5ff 0%, #fff5f9 100%);
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 56px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      background: linear-gradient(135deg, #1a1a2e 30%, #8B5CF6 70%, #FF69B4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 20px;
+      color: #4a4a6a;
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .hero .price {
+      font-size: 48px;
+      font-weight: 800;
+      color: #8B5CF6;
+      margin: 30px 0;
+    }
+
+    .hero .price span {
+      font-size: 20px;
+      font-weight: 400;
+      color: #8888aa;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      background: rgba(139, 92, 246, 0.1);
+      color: #8B5CF6;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .hero .guarantee {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #8888aa;
+    }
+
+    /* Features */
+    .features {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .features h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 60px;
+      color: #1a1a2e;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: #faf5ff;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      transition: transform 0.3s;
+      border: 1px solid #f0e6ff;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .feature-card .icon {
+      font-size: 40px;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      font-size: 20px;
+      margin-bottom: 10px;
+      color: #1a1a2e;
+    }
+
+    .feature-card p {
+      color: #666;
+      font-size: 15px;
+    }
+
+    /* Prizes */
+    .prizes {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #faf5ff, #fff5f9);
+    }
+
+    .prizes h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: #1a1a2e;
+    }
+
+    .prizes .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 50px;
+      font-size: 18px;
+    }
+
+    .prizes-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .prize-card {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      border: 2px solid #f0e6ff;
+      transition: all 0.3s;
+    }
+
+    .prize-card.gold {
+      border-color: #FFD700;
+      background: #fffef5;
+      transform: scale(1.05);
+    }
+
+    .prize-card.silver {
+      border-color: #C0C0C0;
+    }
+
+    .prize-card.bronze {
+      border-color: #CD7F32;
+    }
+
+    .prize-card .place {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #888;
+    }
+
+    .prize-card .amount {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1a1a2e;
+      margin: 10px 0;
+    }
+
+    .prize-card .label {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* For everyone */
+    .for-everyone {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .for-everyone h2 {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 20px;
+      color: #1a1a2e;
+    }
+
+    .for-everyone .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 40px;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .benefit-item {
+      background: #faf5ff;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: 500;
+      color: #1a1a2e;
+      border: 1px solid #f0e6ff;
+    }
+
+    .benefit-item .emoji {
+      font-size: 24px;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    /* How it works */
+    .how-it-works {
+      padding: 80px 0;
+      background: #faf5ff;
+    }
+
+    .how-it-works h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 50px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .step {
+      text-align: center;
+    }
+
+    .step .number {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 auto 15px;
+    }
+
+    .step h4 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      color: #666;
+      font-size: 14px;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #1a1a2e, #2d1b69);
+      color: white;
+      text-align: center;
+    }
+
+    .cta h2 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+
+    .cta p {
+      font-size: 18px;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+
+    .cta .btn-primary {
+      font-size: 20px;
+      padding: 16px 48px;
+    }
+
+    .cta .btn-secondary {
+      background: transparent;
+      border-color: white;
+      color: white;
+      margin-left: 15px;
+    }
+
+    .cta .btn-secondary:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Footer */
+    footer {
+      background: #1a1a2e;
+      color: #888;
+      padding: 40px 0;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    footer a {
+      color: #8B5CF6;
+      text-decoration: none;
+    }
+
+    .footer-links {
+      margin-bottom: 20px;
+    }
+
+    .footer-links a {
+      margin: 0 15px;
+      color: #888;
+    }
+
+    .footer-links a:hover {
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+
+      .prizes-grid {
+        grid-template-columns: 1fr;
+        max-width: 300px;
+      }
+
+      .prize-card.gold {
+        transform: none;
+      }
+
+      .nav-links {
+        gap: 15px;
+      }
+
+      .cta h2 {
+        font-size: 28px;
+      }
+
+      .cta .btn-secondary {
+        margin-left: 0;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="logo">✦ Backend Boost</div>
+      <div class="nav-links">
+        <a href="#features">О курсе</a>
+        <a href="#prizes">Призы</a>
+        <a href="#how-it-works">Как это работает</a>
+        <a href="/login" class="btn btn-secondary" style="padding: 8px 20px; font-size: 14px;">Войти</a>
+      </div>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="badge">🚀 Набор открыт — всего 50 мест</div>
+      <h1>Стань бэкенд-разработчиком <br>за 3 месяца и заработай</h1>
+      <p>30 уроков, живое сообщество, призовой фонд $500 для лучших студентов.</p>
+      <div class="price">$50 <span>за весь курс</span></div>
+      <a href="/register" class="btn btn-primary">Записаться сейчас</a>
+      <div class="guarantee">⚡ 7 дней на возврат, если не зашел в кабинет</div>
+    </div>
+  </section>
+
+  <section class="features" id="features">
+    <div class="container">
+      <h2>Почему Backend Boost?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon">⚡</div>
+          <h3>Скорость</h3>
+          <p>30 уроков за 3 месяца. Ты учишься в своем темпе, но мы подгоняем.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🏆</div>
+          <h3>Learn to Earn</h3>
+          <p>Баллы за уроки. Топ-3 получают деньги из призового фонда.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🌍</div>
+          <h3>СНГ-комьюнити</h3>
+          <p>Студенты из Казахстана, России, Беларуси, Кыргызстана. Общаемся без границ.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📜</div>
+          <h3>Сертификат</h3>
+          <p>Цифровой сертификат с подтверждением навыков для твоего резюме.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="prizes" id="prizes">
+    <div class="container">
+      <h2>💰 Призовой фонд</h2>
+      <p class="subtitle">Топ-3 студента забирают $500 из общего банка курса</p>
+      <div class="prizes-grid">
+        <div class="prize-card gold">
+          <div class="place">🥇 1 место</div>
+          <div class="amount">$300</div>
+          <div class="label">+ пожизненный доступ</div>
+        </div>
+        <div class="prize-card silver">
+          <div class="place">🥈 2 место</div>
+          <div class="amount">$150</div>
+          <div class="label">+ скидка на следующий курс</div>
+        </div>
+        <div class="prize-card bronze">
+          <div class="place">🥉 3 место</div>
+          <div class="amount">$50</div>
+          <div class="label">+ доступ к закрытому чату</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="for-everyone">
+    <div class="container">
+      <h2>🎁 Что получают все студенты</h2>
+      <p class="subtitle">Даже если не попал в топ-3, ты не остаешься с пустыми руками</p>
+      <div class="benefits-grid">
+        <div class="benefit-item"><span class="emoji">📜</span> Сертификат с подписью</div>
+        <div class="benefit-item"><span class="emoji">♾️</span> Пожизненный доступ к материалам</div>
+        <div class="benefit-item"><span class="emoji">💬</span> Закрытый чат выпускников</div>
+        <div class="benefit-item"><span class="emoji">🎯</span> Доступ к вакансиям</div>
+        <div class="benefit-item"><span class="emoji">💸</span> Скидка 20% на следующий курс</div>
+        <div class="benefit-item"><span class="emoji">🧑‍🏫</span> Шанс стать ментором</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <h2>🚀 Как это работает</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="number">1</div>
+          <h4>Оплати курс</h4>
+          <p>$50 — и ты в группе из 50 человек</p>
+        </div>
+        <div class="step">
+          <div class="number">2</div>
+          <h4>Проходи уроки</h4>
+          <p>30 уроков по бэкенду с практикой</p>
+        </div>
+        <div class="step">
+          <div class="number">3</div>
+          <h4>Получай баллы</h4>
+          <p>За каждый урок — 10 баллов</p>
+        </div>
+        <div class="step">
+          <div class="number">4</div>
+          <h4>Соревнуйся</h4>
+          <p>Топ-3 забирают $500 в конце</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="container">
+      <h2>Готова прокачать бэкенд?</h2>
+      <p>50 мест. 3 месяца. $500 призовых. Твой билет в разработку.</p>
+      <div>
+        <a href="/register" class="btn btn-primary">🔥 Записаться</a>
+        <a href="/login" class="btn btn-secondary">Войти в кабинет</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">Оферта</a>
+        <a href="#">Возвраты</a>
+        <a href="/login">Вход</a>
+      </div>
+      <p>✦ Backend Boost — обучение с выгодой. Сделано с ❤️ в Беларуси</p>
+      <p style="margin-top: 5px; font-size: 12px;">Оплата через ЮMoney и криптовалюту</p>
+    </div>
+  </footer>
+
+</body>
+</html>
