@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Мой кабинет — Backend Boost</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #faf5ff;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .header {
+      background: white;
+      padding: 16px 0;
+      border-bottom: 1px solid #f0e6ff;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .header-actions .score {
+      background: #faf5ff;
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid #f0e6ff;
+    }
+
+    .header-actions .score span {
+      color: #8B5CF6;
+    }
+
+    .btn-logout {
+      padding: 8px 20px;
+      border: 1px solid #fee2e2;
+      border-radius: 50px;
+      background: white;
+      color: #dc2626;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-logout:hover {
+      background: #fee2e2;
+    }
+
+    /* Main */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 30px 20px;
+    }
+
+    /* Welcome */
+    .welcome {
+      background: linear-gradient(135deg, #1a1a2e, #2d1b69);
+      color: white;
+      padding: 30px 40px;
+      border-radius: 20px;
+      margin-bottom: 30px;
+    }
+
+    .welcome h1 {
+      font-size: 28px;
+      margin-bottom: 6px;
+    }
+
+    .welcome p {
+      color: #ccc;
+      font-size: 16px;
+    }
+
+    .welcome .status {
+      margin-top: 12px;
+      display: inline-block;
+      padding: 4px 16px;
+      border-radius: 50px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .status.paid {
+      background: #16a34a;
+      color: white;
+    }
+
+    .status.unpaid {
+      background: #f59e0b;
+      color: white;
+    }
+
+    /* Stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid #f0e6ff;
+      text-align: center;
+    }
+
+    .stat-card .number {
+      font-size: 32px;
+      font-weight: 800;
+      color: #8B5CF6;
+    }
+
+    .stat-card .label {
+      font-size: 14px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    /* Leaderboard */
+    .leaderboard {
+      background: white;
+      border-radius: 20px;
+      padding: 24px;
+      border: 1px solid #f0e6ff;
+      margin-bottom: 30px;
+    }
+
+    .leaderboard h2 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .leaderboard table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .leaderboard th {
+      text-align: left;
+      padding: 10px 12px;
+      font-size: 13px;
+      text-transform: uppercase;
+      color: #888;
+      font-weight: 600;
+      border-bottom: 2px solid #f0e6ff;
+    }
+
+    .leaderboard td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #f5f0ff;
+      font-size: 15px;
+    }
+
+    .leaderboard tr:last-child td {
+      border-bottom: none;
+    }
+
+    .leaderboard .rank {
+      font-weight: 700;
+      color: #888;
+      width: 40px;
+    }
+
+    .leaderboard .rank.top1 { color: #FFD700; }
+    .leaderboard .rank.top2 { color: #C0C0C0; }
+    .leaderboard .rank.top3 { color: #CD7F32; }
+
+    .leaderboard .medal {
+      font-size: 20px;
+    }
+
+    .leaderboard .you {
+      background: #faf5ff;
+      font-weight: 600;
+    }
+
+    .leaderboard .you td {
+      border-bottom: 2px solid #8B5CF6;
+    }
+
+    /* Modules */
+    .modules h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .module {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid #f0e6ff;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .module-header {
+      padding: 16px 24px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.2s;
+    }
+
+    .module-header:hover {
+      background: #faf5ff;
+    }
+
+    .module-header .title {
+      font-weight: 600;
+      font-size: 18px;
+    }
+
+    .module-header .progress-text {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .module-body {
+      padding: 0 24px 24px;
+      display: none;
+    }
+
+    .module-body.open {
+      display: block;
+    }
+
+    .lesson {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid #f5f0ff;
+    }
+
+    .lesson:last-child {
+      border-bottom: none;
+    }
+
+    .lesson .info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lesson .info .num {
+      font-size: 14px;
+      font-weight: 600;
+      color: #888;
+      width: 28px;
+    }
+
+    .lesson .info .name {
+      font-size: 15px;
+    }
+
+    .lesson .info .locked {
+      font-size: 12px;
+      color: #888;
+      background: #f5f0ff;
+      padding: 2px 10px;
+      border-radius: 50px;
+    }
+
+    .lesson .actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .lesson .points {
+      font-size: 14px;
+      color: #888;
+    }
+
+    .lesson .points.done {
+      color: #16a34a;
+      font-weight: 600;
+    }
+
+    .btn-complete {
+      padding: 4px 16px;
+      border: none;
+      border-radius: 50px;
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      color: white;
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-complete:hover {
+      transform: scale(1.05);
+    }
+
+    .btn-complete:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-complete.done {
+      background: #16a34a;
+    }
+
+    .lesson-content {
+      display: none;
+      margin-top: 12px;
+      padding: 16px;
+      background: #faf5ff;
+      border-radius: 12px;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #333;
+    }
+
+    .lesson-content.open {
+      display: block;
+    }
+
+    .lesson-content .video-placeholder {
+      background: #1a1a2e;
+      color: white;
+      padding: 40px;
+      text-align: center;
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    /* Payment banner */
+    .payment-banner {
+      background: #fef3c7;
+      border: 1px solid #f59e0b;
+      border-radius: 16px;
+      padding: 16px 24px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .payment-banner p {
+      color: #92400e;
+      font-weight: 500;
+    }
+
+    .payment-banner .btn-pay {
+      padding: 10px 28px;
+      border: none;
+      border-radius: 50px;
+      background: #f59e0b;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .payment-banner .btn-pay:hover {
+      background: #d97706;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #1a1a2e;
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 999;
+      max-width: 400px;
+    }
+
+    .toast.success { border-left: 4px solid #16a34a; }
+    .toast.error { border-left: 4px solid #dc2626; }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .welcome {
+        padding: 20px;
+      }
+      .welcome h1 {
+        font-size: 22px;
+      }
+      .header .container {
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .module-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .leaderboard table {
+        font-size: 13px;
+      }
+      .leaderboard th, .leaderboard td {
+        padding: 6px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="container">
+    <div class="logo">✦ Backend Boost</div>
+    <div class="header-actions">
+      <div class="score">🏆 <span id="userScore">0</span> баллов</div>
+      <button class="btn-logout" id="logoutBtn">Выйти</button>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- Welcome -->
+  <div class="welcome" id="welcomeBlock">
+    <h1 id="greeting">Привет, 👋</h1>
+    <p id="userEmail">email@example.com</p>
+    <div class="status unpaid" id="paymentStatus">⏳ Ожидает оплаты</div>
+  </div>
+
+  <!-- Payment Banner (показываем только если не оплачено) -->
+  <div class="payment-banner" id="paymentBanner">
+    <p>💰 Ты еще не оплатил курс. После оплаты откроется доступ ко всем урокам.</p>
+    <button class="btn-pay" id="payBtn">Перейти к оплате</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="number" id="lessonsCompleted">0</div>
+      <div class="label">Уроков пройдено</div>
+    </div>
+    <div class="stat-card">
+      <div class="number" id="totalLessons">30</div>
+      <div class="label">Всего уроков</div>
+    </div>
+    <div class="stat-card">
+      <div class="number" id="yourRank">-</div>
+      <div class="label">Твое место</div>
+    </div>
+  </div>
+
+  <!-- Leaderboard -->
+  <div class="leaderboard">
+    <h2>🏅 Таблица лидеров</h2>
+    <div id="leaderboardContainer">
+      <p style="color: #888;">Загрузка...</p>
+    </div>
+  </div>
+
+  <!-- Modules -->
+  <div class="modules">
+    <h2>📚 Программа курса</h2>
+    <div id="modulesContainer">
+      <p style="color: #888;">Загрузка...</p>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ============ КОНФИГУРАЦИЯ ============
+  const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
+
+  // ============ ИНИЦИАЛИЗАЦИЯ ============
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  let currentUser = null;
+  let allModules = [];
+  let allLessons = [];
+  let userProgress = [];
+  let allProfiles = [];
+
+  // ============ ТОСТ ============
+  function showToast(message, type = 'success') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'toast ' + type;
+    toast.style.display = 'block';
+    setTimeout(() => { toast.style.display = 'none'; }, 4000);
+  }
+
+  // ============ ПРОВЕРКА АВТОРИЗАЦИИ ============
+  async function checkAuth() {
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error || !data.session) {
+      window.location.href = '/login.html';
+      return null;
+    }
+    currentUser = data.session.user;
+    return currentUser;
+  }
+
+  // ============ ЗАГРУЗКА ДАННЫХ ============
+  async function loadData() {
+    try {
+      // 1. Загружаем модули и уроки
+      const { data: modules, error: modErr } = await supabaseClient
+        .from('modules')
+        .select('*')
+        .order('order_num');
+
+      if (modErr) throw modErr;
+      allModules = modules;
+
+      const { data: lessons, error: lesErr } = await supabaseClient
+        .from('lessons')
+        .select('*')
+        .order('order_num');
+
+      if (lesErr) throw lesErr;
+      allLessons = lessons;
+
+      // 2. Загружаем прогресс пользователя
+      const { data: progress, error: progErr } = await supabaseClient
+        .from('progress')
+        .select('*')
+        .eq('user_id', currentUser.id);
+
+      if (progErr) throw progErr;
+      userProgress = progress || [];
+
+      // 3. Загружаем профиль пользователя
+      const { data: profile, error: profErr } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single();
+
+      if (profErr) throw profErr;
+
+      // 4. Загружаем все профили для таблицы лидеров
+      const { data: profiles, error: allProfErr } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .order('total_score', { ascending: false });
+
+      if (allProfErr) throw allProfErr;
+      allProfiles = profiles || [];
+
+      return { profile, progress };
+
+    } catch (err) {
+      console.error('Ошибка загрузки:', err);
+      showToast('Ошибка загрузки данных: ' + err.message, 'error');
+      return null;
+    }
+  }
+
+  // ============ РЕНДЕРИНГ ============
+  function renderDashboard(profile) {
+    // Приветствие
+    document.getElementById('greeting').textContent = 'Привет, ' + (profile.full_name || 'Студент') + ' 👋';
+    document.getElementById('userEmail').textContent = currentUser.email;
+
+    // Статус оплаты
+    const statusEl = document.getElementById('paymentStatus');
+    const banner = document.getElementById('paymentBanner');
+    if (profile.is_paid) {
+      statusEl.textContent = '✅ Оплачено';
+      statusEl.className = 'status paid';
+      banner.style.display = 'none';
+    } else {
+      statusEl.textContent = '⏳ Ожидает оплаты';
+      statusEl.className = 'status unpaid';
+      banner.style.display = 'flex';
+    }
+
+    // Баллы
+    document.getElementById('userScore').textContent = profile.total_score || 0;
+
+    // Статистика
+    const completed = userProgress.filter(p => p.is_completed).length;
+    document.getElementById('lessonsCompleted').textContent = completed;
+    document.getElementById('totalLessons').textContent = allLessons.length;
+
+    // Место в рейтинге
+    const sorted = allProfiles.filter(p => p.is_paid).sort((a,b) => (b.total_score||0) - (a.total_score||0));
+    const rank = sorted.findIndex(p => p.id === currentUser.id) + 1;
+    document.getElementById('yourRank').textContent = rank > 0 ? '#' + rank : '-';
+
+    // Рендерим таблицу лидеров
+    renderLeaderboard(sorted);
+
+    // Рендерим модули и уроки
+    renderModules(profile.is_paid);
+  }
+
+  function renderLeaderboard(sorted) {
+    const container = document.getElementById('leaderboardContainer');
+    const top = sorted.slice(0, 10);
+
+    if (top.length === 0) {
+      container.innerHTML = '<p style="color: #888;">Пока нет активных студентов</p>';
+      return;
+    }
+
+    let html = `<table>
+      <thead><tr><th>#</th><th>Студент</th><th>Баллы</th></tr></thead><tbody>`;
+
+    top.forEach((p, i) => {
+      const isYou = p.id === currentUser.id;
+      const rankClass = i === 0 ? 'top1' : i === 1 ? 'top2' : i === 2 ? 'top3' : '';
+      const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '';
+      html += `<tr class="${isYou ? 'you' : ''}">
+        <td class="rank ${rankClass}">${medal || '#' + (i+1)}</td>
+        <td>${p.full_name || 'Аноним'} ${isYou ? ' (ты)' : ''}</td>
+        <td>${p.total_score || 0}</td>
+      </tr>`;
+    });
+
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+  function renderModules(isPaid) {
+    const container = document.getElementById('modulesContainer');
+
+    if (allModules.length === 0) {
+      container.innerHTML = '<p style="color: #888;">Модули пока не загружены</p>';
+      return;
+    }
+
+    let html = '';
+    allModules.forEach(mod => {
+      const lessons = allLessons.filter(l => l.module_id === mod.id);
+      const completedInModule = lessons.filter(l => 
+        userProgress.some(p => p.lesson_id === l.id && p.is_completed)
+      ).length;
+
+      html += `<div class="module">
+        <div class="module-header" onclick="toggleModule(this)">
+          <span class="title">${mod.title}</span>
+          <span class="progress-text">${completedInModule}/${lessons.length} уроков</span>
+        </div>
+        <div class="module-body">`;
+
+      lessons.forEach((lesson, idx) => {
+        const prog = userProgress.find(p => p.lesson_id === lesson.id);
+        const isDone = prog?.is_completed || false;
+        const isLocked = !isPaid; // если не оплачено — все уроки заблокированы
+
+        html += `<div class="lesson">
+          <div class="info">
+            <span class="num">${String(idx+1).padStart(2, '0')}</span>
+            <span class="name">${lesson.title}</span>
+            ${isLocked ? '<span class="locked">🔒 заблокировано</span>' : ''}
+          </div>
+          <div class="actions">
+            <span class="points ${isDone ? 'done' : ''}">${isDone ? '✅ +' + lesson.points : '+' + lesson.points}</span>
+            <button class="btn-complete ${isDone ? 'done' : ''}" 
+                    data-lesson-id="${lesson.id}"
+                    ${isDone ? 'disabled' : ''}
+                    ${isLocked ? 'disabled' : ''}
+                    onclick="completeLesson(${lesson.id}, this)">
+              ${isDone ? '✅ Пройдено' : 'Завершить'}
+            </button>
+          </div>
+        </div>`;
+
+        // Добавляем контент урока (скрытый)
+        html += `<div class="lesson-content" id="content-${lesson.id}">
+          <div class="video-placeholder">📺 Видео-урок по теме</div>
+          <p>${lesson.content || 'Материал урока будет доступен здесь.'}</p>
+        </div>`;
+      });
+
+      html += `</div></div>`;
+    });
+
+    container.innerHTML = html;
+
+    // Если не оплачено — показываем баннер вместо уроков
+    if (!isPaid) {
+      // Можно ничего не менять, кнопки уже заблокированы
+    }
+  }
+
+  // ============ TOGGLE МОДУЛЯ ============
+  function toggleModule(header) {
+    const body = header.nextElementSibling;
+    body.classList.toggle('open');
+  }
+
+  // ============ ЗАВЕРШЕНИЕ УРОКА ============
+  async function completeLesson(lessonId, btn) {
+    btn.disabled = true;
+    btn.textContent = '⏳';
+
+    try {
+      // Проверяем, не завершен ли уже
+      const existing = userProgress.find(p => p.lesson_id === lessonId);
+      if (existing?.is_completed) {
+        showToast('Урок уже пройден', 'error');
+        btn.disabled = false;
+        btn.textContent = '✅ Пройдено';
+        return;
+      }
+
+      // Добавляем прогресс
+      const { error } = await supabaseClient
+        .from('progress')
+        .insert([
+          {
+            user_id: currentUser.id,
+            lesson_id: lessonId,
+            is_completed: true,
+            completed_at: new Date().toISOString()
+          }
+        ]);
+
+      if (error) throw error;
+
+      // Обновляем локально
+      userProgress.push({ user_id: currentUser.id, lesson_id: lessonId, is_completed: true });
+
+      // Перезагружаем данные для обновления баллов
+      const { data: newProfile } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', currentUser.id)
+        .single();
+
+      // Обновляем UI
+      showToast('🎉 Урок пройден! +10 баллов', 'success');
+      
+      // Просто перезагружаем дашборд
+      location.reload();
+
+    } catch (err) {
+      console.error(err);
+      showToast('Ошибка: ' + err.message, 'error');
+      btn.disabled = false;
+      btn.textContent = 'Завершить';
+    }
+  }
+
+  // ============ ВЫХОД ============
+  document.getElementById('logoutBtn').addEventListener('click', async function() {
+    await supabaseClient.auth.signOut();
+    localStorage.removeItem('sb-user-email');
+    window.location.href = '/login.html';
+  });
+
+  // ============ КНОПКА ОПЛАТЫ ============
+  document.getElementById('payBtn').addEventListener('click', function() {
+    window.location.href = '/payment.html';
+  });
+
+  // ============ ЗАПУСК ============
+  document.addEventListener('DOMContentLoaded', async function() {
+    const user = await checkAuth();
+    if (!user) return;
+
+    const result = await loadData();
+    if (result) {
+      renderDashboard(result.profile);
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</body>
+</html>
