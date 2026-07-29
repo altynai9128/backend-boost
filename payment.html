@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Оплата курса — Backend Boost</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #faf5ff, #fff5f9);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .payment-card {
+      background: white;
+      border-radius: 24px;
+      padding: 48px 40px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(139, 92, 246, 0.15);
+      border: 1px solid #f0e6ff;
+      text-align: center;
+    }
+
+    .payment-card .logo {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .payment-card .subtitle {
+      color: #666;
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    .price-box {
+      background: #faf5ff;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
+      border: 2px dashed #8B5CF6;
+    }
+
+    .price-box .amount {
+      font-size: 48px;
+      font-weight: 800;
+      color: #8B5CF6;
+    }
+
+    .price-box .label {
+      font-size: 14px;
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 2px solid #f0e6ff;
+      margin: 24px 0;
+    }
+
+    .payment-methods {
+      text-align: left;
+      margin: 20px 0;
+    }
+
+    .payment-methods h3 {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: #1a1a2e;
+    }
+
+    .method {
+      background: #fafafa;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 10px;
+      border: 1px solid #f0e6ff;
+    }
+
+    .method .title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .method .details {
+      font-size: 14px;
+      color: #666;
+      margin-top: 4px;
+      word-break: break-all;
+    }
+
+    .method .details strong {
+      color: #1a1a2e;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 8px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      color: white;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: #f0e6ff;
+      color: #8B5CF6;
+    }
+
+    .btn-secondary:hover {
+      background: #e0d6f5;
+    }
+
+    .btn-success {
+      background: #16a34a;
+      color: white;
+    }
+
+    .btn-success:hover {
+      background: #15803d;
+    }
+
+    .footer-text {
+      margin-top: 20px;
+      color: #888;
+      font-size: 14px;
+    }
+
+    .footer-text a {
+      color: #8B5CF6;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .error-msg {
+      background: #fee2e2;
+      color: #dc2626;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .success-msg {
+      background: #dcfce7;
+      color: #16a34a;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    .loader {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .copy-btn {
+      background: #f0e6ff;
+      border: none;
+      border-radius: 6px;
+      padding: 2px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      color: #8B5CF6;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    .copy-btn:hover {
+      background: #e0d6f5;
+    }
+  </style>
+</head>
+<body>
+
+<div class="payment-card">
+  <div class="logo">✦ Backend Boost</div>
+  <div class="subtitle">Оплата курса</div>
+
+  <div id="errorMsg" class="error-msg"></div>
+  <div id="successMsg" class="success-msg"></div>
+
+  <div class="price-box">
+    <div class="amount">$50</div>
+    <div class="label">Весь курс — 3 месяца, 30 уроков</div>
+  </div>
+
+  <hr class="divider" />
+
+  <div class="payment-methods">
+    <h3>💳 Способы оплаты</h3>
+
+    <div class="method">
+      <div class="title">🇷🇺 ЮMoney</div>
+      <div class="details">
+        <strong>Кошелек:</strong> 410011234567890<br />
+        <strong>Комментарий:</strong> укажи свой email: <span id="userEmailDisplay">—</span>
+        <button class="copy-btn" onclick="copyEmail()">📋 Копировать email</button>
+      </div>
+    </div>
+
+    <div class="method">
+      <div class="title">₿ Криптовалюта (USDT)</div>
+      <div class="details">
+        <strong>Сеть:</strong> TRC20<br />
+        <strong>Адрес:</strong> TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        <button class="copy-btn" onclick="copyCryptoAddress()">📋 Копировать</button>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <p style="font-size: 14px; color: #666; margin-bottom: 16px;">
+    После оплаты нажми кнопку ниже. Мы проверим платеж и откроем доступ в течение 24 часов.
+  </p>
+
+  <button class="btn btn-success" id="confirmPaymentBtn">✅ Я оплатил(а)</button>
+
+  <div style="margin-top: 12px;">
+    <a href="/dashboard.html" class="btn btn-secondary" style="display: inline-block; text-decoration: none; padding: 12px 24px; border-radius: 50px; font-weight: 600; font-size: 14px; background: #f0e6ff; color: #8B5CF6; width: auto;">← Вернуться в кабинет</a>
+  </div>
+
+  <div class="footer-text">
+    Вопросы? Напиши в <a href="#">поддержку</a>
+  </div>
+</div>
+
+<script>
+  // ============ КОНФИГУРАЦИЯ ============
+  const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
+
+  const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ============ ПОЛУЧАЕМ EMAIL ПОЛЬЗОВАТЕЛЯ ============
+  document.addEventListener('DOMContentLoaded', async function() {
+    const { data } = await supabaseClient.auth.getSession();
+    const user = data?.session?.user;
+
+    if (user) {
+      document.getElementById('userEmailDisplay').textContent = user.email;
+    } else {
+      // Если не залогинены — отправляем на логин
+      window.location.href = '/login.html';
+    }
+
+    // Проверяем, не оплачено ли уже
+    const { data: profile } = await supabaseClient
+      .from('profiles')
+      .select('is_paid')
+      .eq('id', user?.id)
+      .single();
+
+    if (profile?.is_paid) {
+      document.getElementById('successMsg').textContent = '✅ Курс уже оплачен! Перенаправляем в кабинет...';
+      document.getElementById('successMsg').style.display = 'block';
+      setTimeout(() => { window.location.href = '/dashboard.html'; }, 2000);
+    }
+  });
+
+  // ============ КОПИРОВАТЬ EMAIL ============
+  function copyEmail() {
+    const email = document.getElementById('userEmailDisplay').textContent;
+    navigator.clipboard.writeText(email);
+    showToast('Email скопирован!', 'success');
+  }
+
+  // ============ КОПИРОВАТЬ КРИПТО-АДРЕС ============
+  function copyCryptoAddress() {
+    const address = 'TXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+    navigator.clipboard.writeText(address);
+    showToast('Адрес скопирован!', 'success');
+  }
+
+  // ============ ТОСТ ============
+  function showToast(message, type) {
+    const existing = document.querySelector('.toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    toast.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: ${type === 'success' ? '#16a34a' : '#dc2626'};
+      color: white;
+      padding: 16px 24px;
+      border-radius: 12px;
+      font-weight: 500;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      z-index: 999;
+      max-width: 400px;
+      animation: fadeIn 0.3s;
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => { toast.remove(); }, 4000);
+  }
+
+  // ============ КНОПКА "Я ОПЛАТИЛ" ============
+  document.getElementById('confirmPaymentBtn').addEventListener('click', async function() {
+    const btn = this;
+    btn.disabled = true;
+    btn.innerHTML = '<span class="loader"></span> Отправляем запрос...';
+
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+    errorMsg.style.display = 'none';
+    successMsg.style.display = 'none';
+
+    try {
+      const { data } = await supabaseClient.auth.getSession();
+      const user = data?.session?.user;
+
+      if (!user) {
+        throw new Error('Пожалуйста, войди в аккаунт');
+      }
+
+      // Отправляем запрос на подтверждение оплаты
+      // ВАЖНО: Это временное решение. Позже мы добавим автоматическую проверку.
+      // Сейчас мы просто сохраняем заявку в таблицу payments.
+
+      const { error: paymentError } = await supabaseClient
+        .from('payments')
+        .insert([
+          {
+            user_id: user.id,
+            amount: 50,
+            currency: 'USD',
+            payment_method: 'manual',
+            status: 'pending'
+          }
+        ]);
+
+      if (paymentError) throw paymentError;
+
+      // Успех
+      successMsg.textContent = '✅ Заявка отправлена! Мы проверим оплату и откроем доступ в течение 24 часов.';
+      successMsg.style.display = 'block';
+
+      btn.innerHTML = '✅ Отправлено';
+      btn.className = 'btn btn-success';
+      btn.disabled = true;
+
+      // Перенаправляем в кабинет через 3 секунды
+      setTimeout(() => {
+        window.location.href = '/dashboard.html';
+      }, 3000);
+
+    } catch (err) {
+      errorMsg.textContent = '❌ ' + err.message;
+      errorMsg.style.display = 'block';
+      btn.disabled = false;
+      btn.innerHTML = '✅ Я оплатил(а)';
+    }
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</body>
+</html>
