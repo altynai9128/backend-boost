@@ -101,6 +101,13 @@
       transform: none;
     }
 
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
     .auth-card .footer-text {
       text-align: center;
       margin-top: 20px;
@@ -228,13 +235,13 @@
     </select>
 
     <div class="checkbox-group">
-      <input type="checkbox" id="agree" required />
+      <input type="checkbox" id="agree" required onchange="toggleRegisterButton()" />
       <label for="agree">
         Я соглашаюсь с <a href="/offer.html" target="_blank">условиями оферты</a> и подтверждаю, что ознакомился с <a href="/offer.html" target="_blank">правилами возврата</a>
       </label>
     </div>
 
-    <button type="submit" class="btn" id="submitBtn">Создать аккаунт</button>
+    <button type="submit" class="btn" id="submitBtn" disabled>Создать аккаунт</button>
   </form>
 
   <div class="footer-text">
@@ -292,6 +299,18 @@
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="loader"></span> Регистрация...';
+      
+    function toggleRegisterButton() {
+      const agree = document.getElementById('agree');
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = !agree.checked;
+    }
+
+    // При загрузке страницы — кнопка заблокирована
+    document.addEventListener('DOMContentLoaded', function() {
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+    });
 
       try {
         const { data: authData, error: authError } = await supabaseClient.auth.signUp({
