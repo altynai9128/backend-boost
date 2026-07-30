@@ -15,135 +15,10 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       background: linear-gradient(135deg, #faf5ff, #fff5f9);
       min-height: 100vh;
-      padding: 20px;
-    }
-
-    header {
-      background: white;
-      padding: 16px 0;
-      border-bottom: 1px solid #f0e6ff;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-      background: rgba(255, 255, 255, 0.95);
-      margin-bottom: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.06);
-    }
-
-    header .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .logo a {
-      text-decoration: none;
-      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #4a4a6a;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    .nav-links a:hover {
-      color: #8B5CF6;
-    }
-
-    .btn {
-      padding: 12px 32px;
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .btn-secondary {
-      background: white;
-      color: #8B5CF6;
-      border: 2px solid #8B5CF6;
-    }
-
-    .btn-secondary:hover {
-      background: #f5f0ff;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
-      color: white;
-      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
-    }
-
-    .burger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
-      background: none;
-      border: none;
-      padding: 5px;
-    }
-
-    .burger span {
-      display: block;
-      width: 28px;
-      height: 3px;
-      background: #1a1a2e;
-      border-radius: 3px;
-      transition: all 0.3s ease;
-    }
-
-    .burger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 6px);
-    }
-
-    .burger.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .burger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -6px);
-    }
-
-    .auth-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px 0 40px;
+      padding: 20px;
     }
 
     .auth-card {
@@ -154,6 +29,17 @@
       width: 100%;
       box-shadow: 0 20px 60px rgba(139, 92, 246, 0.15);
       border: 1px solid #f0e6ff;
+    }
+
+    .auth-card .logo {
+      font-size: 28px;
+      font-weight: 800;
+      text-align: center;
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
     }
 
     .auth-card .subtitle {
@@ -291,6 +177,10 @@
       text-decoration: none;
     }
 
+    .hidden {
+      display: none;
+    }
+
     .loader {
       display: inline-block;
       width: 20px;
@@ -306,255 +196,172 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-
-    @media (max-width: 768px) {
-      .burger {
-        display: flex;
-      }
-
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        padding: 20px;
-        gap: 16px;
-        border-bottom: 2px solid #f0e6ff;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        font-size: 18px;
-        padding: 8px 0;
-        width: 100%;
-        text-align: center;
-      }
-
-      .nav-links .btn {
-        width: 100%;
-        text-align: center;
-        padding: 12px;
-      }
-
-      .auth-card {
-        padding: 32px 24px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .auth-card {
-        padding: 24px 16px;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="container">
-      <div class="logo"><a href="/index.html">✦ Backend Boost</a></div>
+<div class="auth-card">
+  <div class="logo"><a href="/index.html" style="text-decoration:none;">✦ Backend Boost</a></div>
+  <div class="subtitle">Регистрация на курс</div>
 
-      <button class="burger" id="burgerBtn" aria-label="Меню">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+  <div id="errorMsg" class="error-msg"></div>
+  <div id="successMsg" class="success-msg"></div>
 
-      <nav class="nav-links" id="navLinks">
-        <a href="/index.html#features">О курсе</a>
-        <a href="/index.html#prizes">Призы</a>
-        <a href="/index.html#how-it-works">Как это работает?</a>
-        <a href="/register.html" style="color:#8B5CF6; font-weight:500;">Регистрация</a>
-        <a href="/login.html" class="btn btn-secondary" style="padding: 8px 20px; font-size: 14px;">Войти</a>
-      </nav>
+  <form id="registerForm">
+    <label for="fullName">Как тебя зовут?</label>
+    <input type="text" id="fullName" placeholder="Иван Петров" required />
+
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="ivan@example.com" required />
+
+    <label for="password">Пароль (минимум 6 символов)</label>
+    <input type="password" id="password" placeholder="••••••••" minlength="6" required />
+
+    <label for="country">Страна</label>
+    <select id="country" required>
+      <option value="">Выбери страну</option>
+      <option value="Беларусь">Беларусь</option>
+      <option value="Казахстан">Казахстан</option>
+      <option value="Россия">Россия</option>
+      <option value="Кыргызстан">Кыргызстан</option>
+      <option value="Другая">Другая</option>
+    </select>
+
+    <div class="checkbox-group">
+      <input type="checkbox" id="agree" required />
+      <label for="agree">
+        Я соглашаюсь с <a href="/offer.html" target="_blank">условиями оферты</a> и подтверждаю, что ознакомился с <a href="/offer.html" target="_blank">правилами возврата</a>
+      </label>
     </div>
-  </header>
 
-  <div class="auth-wrapper">
-    <div class="auth-card">
-      <div class="subtitle">Регистрация на курс</div>
+    <button type="submit" class="btn" id="submitBtn">Создать аккаунт</button>
+  </form>
 
-      <div id="errorMsg" class="error-msg"></div>
-      <div id="successMsg" class="success-msg"></div>
-
-      <form id="registerForm">
-        <label for="fullName">Как тебя зовут?</label>
-        <input type="text" id="fullName" placeholder="Иван Петров" required />
-
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="ivan@example.com" required />
-
-        <label for="password">Пароль (минимум 6 символов)</label>
-        <input type="password" id="password" placeholder="••••••••" minlength="6" required />
-
-        <label for="country">Страна</label>
-        <select id="country" required>
-          <option value="">Выбери страну</option>
-          <option value="Беларусь">Беларусь</option>
-          <option value="Казахстан">Казахстан</option>
-          <option value="Россия">Россия</option>
-          <option value="Кыргызстан">Кыргызстан</option>
-          <option value="Другая">Другая</option>
-        </select>
-
-        <div class="checkbox-group">
-          <input type="checkbox" id="agree" required />
-          <label for="agree">
-            Я соглашаюсь с <a href="/offer.html" target="_blank">условиями оферты</a> и подтверждаю, что ознакомился с <a href="/offer.html" target="_blank">правилами возврата</a>
-          </label>
-        </div>
-
-        <button type="submit" class="btn" id="submitBtn">Создать аккаунт</button>
-      </form>
-
-      <div class="footer-text">
-        Уже есть аккаунт? <a href="/login.html">Войти</a>
-      </div>
-    </div>
+  <div class="footer-text">
+    Уже есть аккаунт? <a href="/login.html">Войти</a>
   </div>
+</div>
 
-  <script>
-    const burger = document.getElementById('burgerBtn');
-    const nav = document.getElementById('navLinks');
+<script>
+  const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
 
-    burger.addEventListener('click', function() {
-      this.classList.toggle('active');
-      nav.classList.toggle('open');
-    });
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('registerForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+    const submitBtn = document.getElementById('submitBtn');
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', function() {
-        burger.classList.remove('active');
-        nav.classList.remove('open');
-      });
-    });
+    if (typeof supabase === 'undefined') {
+      errorMsg.textContent = '⚠️ Ошибка загрузки Supabase. Попробуй обновить страницу.';
+      errorMsg.style.display = 'block';
+      return;
+    }
 
-    const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const form = document.getElementById('registerForm');
-      const errorMsg = document.getElementById('errorMsg');
-      const successMsg = document.getElementById('successMsg');
-      const submitBtn = document.getElementById('submitBtn');
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-      if (typeof supabase === 'undefined') {
-        errorMsg.textContent = '⚠️ Ошибка загрузки Supabase. Попробуй обновить страницу.';
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
+
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const country = document.getElementById('country').value;
+      const agree = document.getElementById('agree').checked;
+
+      if (!fullName || !email || !password || !country) {
+        errorMsg.textContent = '⚠️ Заполни все поля.';
         errorMsg.style.display = 'block';
         return;
       }
 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      if (password.length < 6) {
+        errorMsg.textContent = '⚠️ Пароль должен быть минимум 6 символов.';
+        errorMsg.style.display = 'block';
+        return;
+      }
 
-      form.addEventListener('submit', async function(e) {
-        e.preventDefault();
+      if (!agree) {
+        errorMsg.textContent = '⚠️ Подтверди согласие с условиями.';
+        errorMsg.style.display = 'block';
+        return;
+      }
 
-        errorMsg.style.display = 'none';
-        successMsg.style.display = 'none';
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span class="loader"></span> Регистрация...';
 
-        const fullName = document.getElementById('fullName').value.trim();
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        const country = document.getElementById('country').value;
-        const agree = document.getElementById('agree').checked;
-
-        if (!fullName || !email || !password || !country) {
-          errorMsg.textContent = '⚠️ Заполни все поля.';
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        if (password.length < 6) {
-          errorMsg.textContent = '⚠️ Пароль должен быть минимум 6 символов.';
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        if (!agree) {
-          errorMsg.textContent = '⚠️ Подтверди согласие с условиями.';
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="loader"></span> Регистрация...';
-
-        try {
-          const { data: authData, error: authError } = await supabaseClient.auth.signUp({
-            email: email,
-            password: password,
-            options: {
-              data: {
-                full_name: fullName,
-                country: country
-              }
+      try {
+        const { data: authData, error: authError } = await supabaseClient.auth.signUp({
+          email: email,
+          password: password,
+          options: {
+            data: {
+              full_name: fullName,
+              country: country
             }
-          });
-
-          if (authError) {
-            throw new Error(authError.message);
           }
+        });
 
-          if (!authData.user) {
-            throw new Error('Не удалось создать аккаунт.');
-          }
-
-          const { data: existingProfile } = await supabaseClient
-            .from('profiles')
-            .select('id')
-            .eq('id', authData.user.id)
-            .single();
-
-          let profileError = null;
-
-          if (!existingProfile) {
-            const { error: insertError } = await supabaseClient
-              .from('profiles')
-              .insert([
-                {
-                  id: authData.user.id,
-                  email: email,
-                  full_name: fullName,
-                  country: country,
-                  is_paid: false,
-                  total_score: 0
-                }
-              ]);
-            profileError = insertError;
-          }
-
-          if (profileError) {
-            console.error('Ошибка создания профиля:', profileError);
-            throw new Error('Аккаунт создан, но произошла техническая ошибка. Напиши нам в поддержку.');
-          }
-
-          successMsg.textContent = '✅ Аккаунт создан! Перенаправляем на страницу оплаты...';
-          successMsg.style.display = 'block';
-
-          localStorage.setItem('pendingPaymentEmail', email);
-
-          setTimeout(() => {
-            window.location.href = '/payment.html';
-          }, 2000);
-
-        } catch (err) {
-          errorMsg.textContent = '❌ ' + err.message;
-          errorMsg.style.display = 'block';
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Создать аккаунт';
+        if (authError) {
+          throw new Error(authError.message);
         }
-      });
-    });
-  </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        if (!authData.user) {
+          throw new Error('Не удалось создать аккаунт.');
+        }
+
+        const { data: existingProfile } = await supabaseClient
+          .from('profiles')
+          .select('id')
+          .eq('id', authData.user.id)
+          .single();
+
+        let profileError = null;
+
+        if (!existingProfile) {
+          const { error: insertError } = await supabaseClient
+            .from('profiles')
+            .insert([
+              {
+                id: authData.user.id,
+                email: email,
+                full_name: fullName,
+                country: country,
+                is_paid: false,
+                total_score: 0
+              }
+            ]);
+          profileError = insertError;
+        }
+
+        if (profileError) {
+          console.error('Ошибка создания профиля:', profileError);
+          throw new Error('Аккаунт создан, но произошла техническая ошибка. Напиши нам в поддержку.');
+        }
+
+        successMsg.textContent = '✅ Аккаунт создан! Перенаправляем на страницу оплаты...';
+        successMsg.style.display = 'block';
+
+        localStorage.setItem('pendingPaymentEmail', email);
+
+        setTimeout(() => {
+          window.location.href = '/payment.html';
+        }, 2000);
+
+      } catch (err) {
+        errorMsg.textContent = '❌ ' + err.message;
+        errorMsg.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Создать аккаунт';
+      }
+    });
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </body>
 </html>
