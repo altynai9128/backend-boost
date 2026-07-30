@@ -35,11 +35,15 @@
       font-size: 28px;
       font-weight: 800;
       text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .auth-card .logo a {
+      text-decoration: none;
       background: linear-gradient(135deg, #8B5CF6, #FF69B4);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin-bottom: 8px;
     }
 
     .auth-card .subtitle {
@@ -90,18 +94,12 @@
       box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
     }
 
-    .auth-card .btn:hover {
+    .auth-card .btn:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
     }
 
     .auth-card .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none !important;
@@ -171,12 +169,14 @@
       height: 18px;
       margin-top: 2px;
       accent-color: #8B5CF6;
+      cursor: pointer;
     }
 
     .checkbox-group label {
       font-size: 13px;
       color: #666;
       font-weight: 400;
+      cursor: pointer;
     }
 
     .checkbox-group a {
@@ -184,8 +184,8 @@
       text-decoration: none;
     }
 
-    .hidden {
-      display: none;
+    .checkbox-group a:hover {
+      text-decoration: underline;
     }
 
     .loader {
@@ -208,7 +208,7 @@
 <body>
 
 <div class="auth-card">
-  <div class="logo"><a href="/index.html" style="text-decoration:none;">✦ Backend Boost</a></div>
+  <div class="logo"><a href="/index.html">✦ Backend Boost</a></div>
   <div class="subtitle">Регистрация на курс</div>
 
   <div id="errorMsg" class="error-msg"></div>
@@ -216,16 +216,16 @@
 
   <form id="registerForm">
     <label for="fullName">Как тебя зовут?</label>
-    <input type="text" id="fullName" placeholder="Иван Петров" required />
+    <input type="text" id="fullName" placeholder="Иван Петров" required oninput="checkForm()" />
 
     <label for="email">Email</label>
-    <input type="email" id="email" placeholder="ivan@example.com" required />
+    <input type="email" id="email" placeholder="ivan@example.com" required oninput="checkForm()" />
 
     <label for="password">Пароль (минимум 6 символов)</label>
-    <input type="password" id="password" placeholder="••••••••" minlength="6" required />
+    <input type="password" id="password" placeholder="••••••••" minlength="6" required oninput="checkForm()" />
 
     <label for="country">Страна</label>
-    <select id="country" required>
+    <select id="country" required onchange="checkForm()">
       <option value="">Выбери страну</option>
       <option value="Беларусь">Беларусь</option>
       <option value="Казахстан">Казахстан</option>
@@ -235,7 +235,7 @@
     </select>
 
     <div class="checkbox-group">
-      <input type="checkbox" id="agree" required onchange="toggleRegisterButton()" />
+      <input type="checkbox" id="agree" required onchange="checkForm()" />
       <label for="agree">
         Я соглашаюсь с <a href="/offer.html" target="_blank">условиями оферты</a> и подтверждаю, что ознакомился с <a href="/offer.html" target="_blank">правилами возврата</a>
       </label>
@@ -250,6 +250,21 @@
 </div>
 
 <script>
+  function checkForm() {
+    const fullName = document.getElementById('fullName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const country = document.getElementById('country').value;
+    const agree = document.getElementById('agree').checked;
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (fullName && email && password.length >= 6 && country && agree) {
+      submitBtn.disabled = false;
+    } else {
+      submitBtn.disabled = true;
+    }
+  }
+
   const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
 
@@ -258,6 +273,8 @@
     const errorMsg = document.getElementById('errorMsg');
     const successMsg = document.getElementById('successMsg');
     const submitBtn = document.getElementById('submitBtn');
+
+    submitBtn.disabled = true;
 
     if (typeof supabase === 'undefined') {
       errorMsg.textContent = '⚠️ Ошибка загрузки Supabase. Попробуй обновить страницу.';
@@ -299,18 +316,6 @@
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="loader"></span> Регистрация...';
-      
-    function toggleRegisterButton() {
-      const agree = document.getElementById('agree');
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = !agree.checked;
-    }
-
-    // При загрузке страницы — кнопка заблокирована
-    document.addEventListener('DOMContentLoaded', function() {
-      const submitBtn = document.getElementById('submitBtn');
-      submitBtn.disabled = true;
-    });
 
       try {
         const { data: authData, error: authError } = await supabaseClient.auth.signUp({
@@ -375,6 +380,7 @@
         errorMsg.style.display = 'block';
         submitBtn.disabled = false;
         submitBtn.textContent = 'Создать аккаунт';
+        checkForm();
       }
     });
   });
