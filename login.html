@@ -104,6 +104,18 @@
       box-shadow: none !important;
     }
 
+    .auth-card .btn-secondary {
+      background: #f0e6ff;
+      color: #8B5CF6;
+      box-shadow: none;
+    }
+
+    .auth-card .btn-secondary:hover:not(:disabled) {
+      background: #e0d6f5;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
+    }
+
     .auth-card .footer-text {
       text-align: center;
       margin-top: 20px;
@@ -170,14 +182,35 @@
     }
 
     .reset-form .btn-reset {
-      background: #f0e6ff;
-      color: #8B5CF6;
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      color: white;
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
       margin-top: 8px;
     }
 
     .reset-form .btn-reset:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    }
+
+    .reset-form .btn-reset:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+
+    .reset-form .btn-cancel {
+      background: #f0e6ff;
+      color: #8B5CF6;
+      box-shadow: none;
+      margin-top: 12px;
+    }
+
+    .reset-form .btn-cancel:hover {
       background: #e0d6f5;
       transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.2);
     }
 
     .loader {
@@ -233,7 +266,7 @@
     <label for="resetEmail">Email</label>
     <input type="email" id="resetEmail" placeholder="ivan@example.com" required oninput="checkResetForm()" />
     <button class="btn btn-reset" id="resetBtn" disabled>Отправить ссылку</button>
-    <button class="btn" style="margin-top: 12px; background: #f0e6ff; color: #8B5CF6;" id="cancelResetBtn">Отмена</button>
+    <button class="btn btn-cancel" id="cancelResetBtn">Отмена</button>
   </div>
 
   <div class="footer-text">
