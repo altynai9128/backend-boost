@@ -15,133 +15,10 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       background: linear-gradient(135deg, #faf5ff, #fff5f9);
       min-height: 100vh;
-      padding: 20px;
-    }
-
-    /* ===== МЕНЮ ===== */
-    header {
-      background: white;
-      padding: 16px 0;
-      border-bottom: 1px solid #f0e6ff;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      backdrop-filter: blur(10px);
-      background: rgba(255, 255, 255, 0.95);
-      margin-bottom: 30px;
-      border-radius: 16px;
-      box-shadow: 0 4px 20px rgba(139, 92, 246, 0.06);
-    }
-
-    header .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: 800;
-    }
-
-    .logo a {
-      text-decoration: none;
-      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 30px;
-      align-items: center;
-    }
-
-    .nav-links a {
-      text-decoration: none;
-      color: #4a4a6a;
-      font-weight: 500;
-      transition: color 0.3s;
-    }
-
-    .nav-links a:hover {
-      color: #8B5CF6;
-    }
-
-    .btn {
-      padding: 12px 32px;
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      font-size: 16px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .btn-secondary {
-      background: white;
-      color: #8B5CF6;
-      border: 2px solid #8B5CF6;
-    }
-
-    .btn-secondary:hover {
-      background: #f5f0ff;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
-      color: white;
-      box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
-    }
-
-    .burger {
-      display: none;
-      flex-direction: column;
-      cursor: pointer;
-      gap: 5px;
-      background: none;
-      border: none;
-      padding: 5px;
-    }
-
-    .burger span {
-      display: block;
-      width: 28px;
-      height: 3px;
-      background: #1a1a2e;
-      border-radius: 3px;
-      transition: all 0.3s ease;
-    }
-
-    .burger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 6px);
-    }
-
-    .burger.active span:nth-child(2) {
-      opacity: 0;
-    }
-
-    .burger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -6px);
-    }
-
-    /* ===== КАРТОЧКА ВХОДА ===== */
-    .auth-wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px 0 40px;
+      padding: 20px;
     }
 
     .auth-card {
@@ -152,6 +29,21 @@
       width: 100%;
       box-shadow: 0 20px 60px rgba(139, 92, 246, 0.15);
       border: 1px solid #f0e6ff;
+    }
+
+    .auth-card .logo {
+      font-size: 28px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .auth-card .logo a {
+      text-decoration: none;
+      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .auth-card .subtitle {
@@ -304,283 +196,205 @@
       to { transform: rotate(360deg); }
     }
 
-    @media (max-width: 768px) {
-      .burger {
-        display: flex;
-      }
-
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        padding: 20px;
-        gap: 16px;
-        border-bottom: 2px solid #f0e6ff;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-      }
-
-      .nav-links.open {
-        display: flex;
-      }
-
-      .nav-links a {
-        font-size: 18px;
-        padding: 8px 0;
-        width: 100%;
-        text-align: center;
-      }
-
-      .nav-links .btn {
-        width: 100%;
-        text-align: center;
-        padding: 12px;
-      }
-
-      .auth-card {
-        padding: 32px 24px;
-      }
-    }
-
     @media (max-width: 480px) {
       .auth-card {
-        padding: 24px 16px;
+        padding: 32px 20px;
       }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <div class="container">
-      <div class="logo"><a href="/index.html">✦ Backend Boost</a></div>
+<div class="auth-card">
+  <div class="logo"><a href="/index.html">✦ Backend Boost</a></div>
+  <div class="subtitle">Войди в свой кабинет</div>
 
-      <button class="burger" id="burgerBtn" aria-label="Меню">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+  <div id="errorMsg" class="error-msg"></div>
+  <div id="successMsg" class="success-msg"></div>
 
-      <nav class="nav-links" id="navLinks">
-        <a href="/index.html#features">О курсе</a>
-        <a href="/index.html#prizes">Призы</a>
-        <a href="/index.html#how-it-works">Как это работает?</a>
-        <a href="/register.html" style="color:#8B5CF6; font-weight:500;">Регистрация</a>
-        <a href="/login.html" class="btn btn-secondary" style="padding: 8px 20px; font-size: 14px;">Войти</a>
-      </nav>
+  <form id="loginForm">
+    <label for="email">Email</label>
+    <input type="email" id="email" placeholder="ivan@example.com" required oninput="checkLoginForm()" />
+
+    <label for="password">Пароль</label>
+    <input type="password" id="password" placeholder="••••••••" required oninput="checkLoginForm()" />
+
+    <div class="forgot-link">
+      <a id="showResetBtn">Забыли пароль?</a>
     </div>
-  </header>
 
-  <div class="auth-wrapper">
-    <div class="auth-card">
-      <div class="subtitle">Войди в свой кабинет</div>
+    <button type="submit" class="btn" id="submitBtn" disabled>Войти</button>
+  </form>
 
-      <div id="errorMsg" class="error-msg"></div>
-      <div id="successMsg" class="success-msg"></div>
-
-      <form id="loginForm">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="ivan@example.com" required oninput="checkLoginForm()" />
-
-        <label for="password">Пароль</label>
-        <input type="password" id="password" placeholder="••••••••" required oninput="checkLoginForm()" />
-
-        <div class="forgot-link">
-          <a id="showResetBtn">Забыли пароль?</a>
-        </div>
-
-        <button type="submit" class="btn" id="submitBtn" disabled>Войти</button>
-      </form>
-
-      <div class="reset-form" id="resetForm">
-        <p style="font-size: 14px; color: #666; margin-bottom: 16px;">
-          Введи свою почту, и мы отправим ссылку для восстановления пароля.
-        </p>
-        <label for="resetEmail">Email</label>
-        <input type="email" id="resetEmail" placeholder="ivan@example.com" required oninput="checkResetForm()" />
-        <button class="btn btn-reset" id="resetBtn" disabled>Отправить ссылку</button>
-        <button class="btn" style="margin-top: 12px; background: #f0e6ff; color: #8B5CF6;" id="cancelResetBtn">Отмена</button>
-      </div>
-
-      <div class="footer-text">
-        Нет аккаунта? <a href="/register.html">Зарегистрироваться</a>
-      </div>
-    </div>
+  <div class="reset-form" id="resetForm">
+    <p style="font-size: 14px; color: #666; margin-bottom: 16px;">
+      Введи свою почту, и мы отправим ссылку для восстановления пароля.
+    </p>
+    <label for="resetEmail">Email</label>
+    <input type="email" id="resetEmail" placeholder="ivan@example.com" required oninput="checkResetForm()" />
+    <button class="btn btn-reset" id="resetBtn" disabled>Отправить ссылку</button>
+    <button class="btn" style="margin-top: 12px; background: #f0e6ff; color: #8B5CF6;" id="cancelResetBtn">Отмена</button>
   </div>
 
-  <script>
-    const burger = document.getElementById('burgerBtn');
-    const nav = document.getElementById('navLinks');
+  <div class="footer-text">
+    Нет аккаунта? <a href="/register.html">Зарегистрироваться</a>
+  </div>
+</div>
 
-    burger.addEventListener('click', function() {
-      this.classList.toggle('active');
-      nav.classList.toggle('open');
+<script>
+  const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+    const submitBtn = document.getElementById('submitBtn');
+
+    const resetForm = document.getElementById('resetForm');
+    const showResetBtn = document.getElementById('showResetBtn');
+    const cancelResetBtn = document.getElementById('cancelResetBtn');
+    const resetEmail = document.getElementById('resetEmail');
+    const resetBtn = document.getElementById('resetBtn');
+
+    if (typeof supabase === 'undefined') {
+      errorMsg.textContent = '⚠️ Ошибка загрузки Supabase. Попробуй обновить страницу.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Проверяем сессию
+    supabaseClient.auth.getSession().then(({ data }) => {
+      if (data.session) {
+        window.location.href = '/dashboard.html';
+      }
     });
 
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', function() {
-        burger.classList.remove('active');
-        nav.classList.remove('open');
-      });
-    });
+    function checkLoginForm() {
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      submitBtn.disabled = !(email && password);
+    }
 
-    const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
+    function checkResetForm() {
+      const email = resetEmail.value.trim();
+      resetBtn.disabled = !email;
+    }
 
-    document.addEventListener('DOMContentLoaded', function() {
-      const form = document.getElementById('loginForm');
-      const errorMsg = document.getElementById('errorMsg');
-      const successMsg = document.getElementById('successMsg');
-      const submitBtn = document.getElementById('submitBtn');
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
 
-      const resetForm = document.getElementById('resetForm');
-      const showResetBtn = document.getElementById('showResetBtn');
-      const cancelResetBtn = document.getElementById('cancelResetBtn');
-      const resetEmail = document.getElementById('resetEmail');
-      const resetBtn = document.getElementById('resetBtn');
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
 
-      if (typeof supabase === 'undefined') {
-        errorMsg.textContent = '⚠️ Ошибка загрузки Supabase. Попробуй обновить страницу.';
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) {
+        errorMsg.textContent = '⚠️ Заполни все поля.';
         errorMsg.style.display = 'block';
         return;
       }
 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-      // Проверяем сессию
-      supabaseClient.auth.getSession().then(({ data }) => {
-        if (data.session) {
-          window.location.href = '/dashboard.html';
-        }
-      });
-
-      function checkLoginForm() {
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-        submitBtn.disabled = !(email && password);
-      }
-
-      function checkResetForm() {
-        const email = resetEmail.value.trim();
-        resetBtn.disabled = !email;
-      }
-
-      form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-
-        errorMsg.style.display = 'none';
-        successMsg.style.display = 'none';
-
-        const email = document.getElementById('email').value.trim();
-        const password = document.getElementById('password').value;
-
-        if (!email || !password) {
-          errorMsg.textContent = '⚠️ Заполни все поля.';
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="loader"></span> Вход...';
-
-        try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-          });
-
-          if (error) {
-            throw new Error(error.message);
-          }
-
-          if (data.session) {
-            localStorage.setItem('sb-user-email', email);
-            window.location.href = '/dashboard.html';
-          } else {
-            throw new Error('Не удалось войти.');
-          }
-
-        } catch (err) {
-          errorMsg.textContent = '❌ ' + err.message;
-          errorMsg.style.display = 'block';
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Войти';
-          checkLoginForm();
-        }
-      });
-
-      showResetBtn.addEventListener('click', function(e) {
-        e.preventDefault();
-        resetForm.classList.add('open');
-        document.getElementById('loginForm').style.display = 'none';
-        errorMsg.style.display = 'none';
-        successMsg.style.display = 'none';
-      });
-
-      cancelResetBtn.addEventListener('click', function() {
-        resetForm.classList.remove('open');
-        document.getElementById('loginForm').style.display = 'block';
-        errorMsg.style.display = 'none';
-        successMsg.style.display = 'none';
-        resetEmail.value = '';
-        resetBtn.disabled = true;
-      });
-
-      // ===== ВОССТАНОВЛЕНИЕ ПАРОЛЯ =====
-      resetBtn.addEventListener('click', async function() {
-        const email = resetEmail.value.trim();
-
-        if (!email) {
-          errorMsg.textContent = '⚠️ Введи email.';
-          errorMsg.style.display = 'block';
-          return;
-        }
-
-        resetBtn.disabled = true;
-        resetBtn.innerHTML = '<span class="loader"></span> Отправка...';
-
-        try {
-          const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-            redirectTo: window.location.origin + '/reset-password.html'
-          });
-
-          if (error) {
-            throw new Error(error.message);
-          }
-
-          successMsg.textContent = '✅ Ссылка для восстановления отправлена на почту!';
-          successMsg.style.display = 'block';
-          resetBtn.innerHTML = '✅ Отправлено';
-          resetBtn.disabled = true;
-
-          setTimeout(() => {
-            resetForm.classList.remove('open');
-            document.getElementById('loginForm').style.display = 'block';
-            successMsg.style.display = 'none';
-            resetEmail.value = '';
-            resetBtn.innerHTML = 'Отправить ссылку';
-            resetBtn.disabled = true;
-          }, 4000);
-
-        } catch (err) {
-          errorMsg.textContent = '❌ ' + err.message;
-          errorMsg.style.display = 'block';
-          resetBtn.disabled = false;
-          resetBtn.innerHTML = 'Отправить ссылку';
-        }
-      });
-
-      window.checkLoginForm = checkLoginForm;
-      window.checkResetForm = checkResetForm;
-
       submitBtn.disabled = true;
-    });
-  </script>
+      submitBtn.innerHTML = '<span class="loader"></span> Вход...';
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        if (data.session) {
+          localStorage.setItem('sb-user-email', email);
+          window.location.href = '/dashboard.html';
+        } else {
+          throw new Error('Не удалось войти.');
+        }
+
+      } catch (err) {
+        errorMsg.textContent = '❌ ' + err.message;
+        errorMsg.style.display = 'block';
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Войти';
+        checkLoginForm();
+      }
+    });
+
+    showResetBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      resetForm.classList.add('open');
+      document.getElementById('loginForm').style.display = 'none';
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
+    });
+
+    cancelResetBtn.addEventListener('click', function() {
+      resetForm.classList.remove('open');
+      document.getElementById('loginForm').style.display = 'block';
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
+      resetEmail.value = '';
+      resetBtn.disabled = true;
+    });
+
+    resetBtn.addEventListener('click', async function() {
+      const email = resetEmail.value.trim();
+
+      if (!email) {
+        errorMsg.textContent = '⚠️ Введи email.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      resetBtn.disabled = true;
+      resetBtn.innerHTML = '<span class="loader"></span> Отправка...';
+
+      try {
+        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+          redirectTo: window.location.origin + '/reset-password.html'
+        });
+
+        if (error) {
+          throw new Error(error.message);
+        }
+
+        successMsg.textContent = '✅ Ссылка для восстановления отправлена на почту!';
+        successMsg.style.display = 'block';
+        resetBtn.innerHTML = '✅ Отправлено';
+        resetBtn.disabled = true;
+
+        setTimeout(() => {
+          resetForm.classList.remove('open');
+          document.getElementById('loginForm').style.display = 'block';
+          successMsg.style.display = 'none';
+          resetEmail.value = '';
+          resetBtn.innerHTML = 'Отправить ссылку';
+          resetBtn.disabled = true;
+        }, 4000);
+
+      } catch (err) {
+        errorMsg.textContent = '❌ ' + err.message;
+        errorMsg.style.display = 'block';
+        resetBtn.disabled = false;
+        resetBtn.innerHTML = 'Отправить ссылку';
+      }
+    });
+
+    window.checkLoginForm = checkLoginForm;
+    window.checkResetForm = checkResetForm;
+
+    submitBtn.disabled = true;
+  });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </body>
 </html>
