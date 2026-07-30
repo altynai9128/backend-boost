@@ -4,6 +4,7 @@
     { "source": "/register", "destination": "/register.html" },
     { "source": "/dashboard", "destination": "/dashboard.html" },
     { "source": "/payment", "destination": "/payment.html" },
+    { "source": "/reset-password", "destination": "/reset-password.html" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
