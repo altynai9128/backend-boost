@@ -205,7 +205,7 @@
   <div class="subtitle">Регистрация на курс</div>
 
   <div class="price-badge">
-    🚀 Стоимость курса <strong>$50</strong> — оплата после регистрации
+    Стоимость курса <strong>$50</strong> — оплата после регистрации
   </div>
 
   <div id="errorMsg" class="error-msg"></div>
@@ -234,7 +234,7 @@
     <div class="checkbox-group">
       <input type="checkbox" id="agree" required />
       <label for="agree">
-        Я соглашаюсь с <a href="#" target="_blank">условиями оферты</a> и подтверждаю, что ознакомился с <a href="#" target="_blank">правилами возврата</a>
+        Я соглашаюсь с <a href="/offer.html" target="_blank">условиями оферты</a> и подтверждаю, что ознакомился с <a href="/offer.html" target="_blank">правилами возврата</a>
       </label>
     </div>
 
@@ -247,42 +247,35 @@
 </div>
 
 <script>
-  // Подключаем Supabase
   const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
 
-  // Ждем загрузки страницы
   document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('registerForm');
     const errorMsg = document.getElementById('errorMsg');
     const successMsg = document.getElementById('successMsg');
     const submitBtn = document.getElementById('submitBtn');
 
-    // Проверяем, что Supabase SDK загружен
     if (typeof supabase === 'undefined') {
       errorMsg.textContent = '⚠️ Ошибка загрузки Supabase. Попробуй обновить страницу.';
       errorMsg.style.display = 'block';
       return;
     }
 
-    // Инициализируем Supabase
     const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      // Скрываем старые сообщения
       errorMsg.style.display = 'none';
       successMsg.style.display = 'none';
 
-      // Собираем данные
       const fullName = document.getElementById('fullName').value.trim();
       const email = document.getElementById('email').value.trim();
       const password = document.getElementById('password').value;
       const country = document.getElementById('country').value;
       const agree = document.getElementById('agree').checked;
 
-      // Валидация
       if (!fullName || !email || !password || !country) {
         errorMsg.textContent = '⚠️ Заполни все поля.';
         errorMsg.style.display = 'block';
@@ -301,12 +294,10 @@
         return;
       }
 
-      // Блокируем кнопку
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<span class="loader"></span> Регистрация...';
 
       try {
-        // 1. Регистрируем пользователя в Supabase Auth
         const { data: authData, error: authError } = await supabaseClient.auth.signUp({
           email: email,
           password: password,
@@ -326,8 +317,6 @@
           throw new Error('Не удалось создать аккаунт.');
         }
 
-        // 2. Создаем профиль в таблице profiles
-        // Проверяем, есть ли уже такой профиль (на всякий случай)
         const { data: existingProfile } = await supabaseClient
           .from('profiles')
           .select('id')
@@ -337,7 +326,6 @@
         let profileError = null;
 
         if (!existingProfile) {
-          // Если профиля нет — создаем
           const { error: insertError } = await supabaseClient
             .from('profiles')
             .insert([
@@ -355,18 +343,14 @@
 
         if (profileError) {
           console.error('Ошибка создания профиля:', profileError);
-          // Пользователь создан, но профиль не создался — это критично
           throw new Error('Аккаунт создан, но произошла техническая ошибка. Напиши нам в поддержку.');
         }
 
-        // Успех!
         successMsg.textContent = '✅ Аккаунт создан! Перенаправляем на страницу оплаты...';
         successMsg.style.display = 'block';
 
-        // Сохраняем email для оплаты
         localStorage.setItem('pendingPaymentEmail', email);
 
-        // Перенаправляем на оплату через 2 секунды
         setTimeout(() => {
           window.location.href = '/payment.html';
         }, 2000);
@@ -381,7 +365,6 @@
   });
 </script>
 
-<!-- Подключаем Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </body>
