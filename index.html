@@ -59,7 +59,6 @@
       background-clip: text;
     }
 
-    /* Навигация */
     .nav-links {
       display: flex;
       gap: 30px;
@@ -110,7 +109,6 @@
       background: #f5f0ff;
     }
 
-    /* Бургер-кнопка (скрыта на десктопе) */
     .burger {
       display: none;
       flex-direction: column;
@@ -245,7 +243,6 @@
       font-size: 15px;
     }
 
-    /* Prizes */
     .prizes {
       padding: 80px 0;
       background: linear-gradient(135deg, #faf5ff, #fff5f9);
@@ -407,7 +404,99 @@
       font-size: 14px;
     }
 
-    /* CTA */
+    /* ===== FAQ (ГАРМОШКА) ===== */
+    .faq {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .faq h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 16px;
+      color: #1a1a2e;
+    }
+
+    .faq .subtitle {
+      text-align: center;
+      color: #666;
+      font-size: 18px;
+      margin-bottom: 48px;
+    }
+
+    .faq-list {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .faq-item {
+      border: 1px solid #f0e6ff;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #fafafa;
+      transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+      border-color: #d4c4f0;
+    }
+
+    .faq-question {
+      width: 100%;
+      padding: 20px 24px;
+      background: none;
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: #1a1a2e;
+      cursor: pointer;
+      text-align: left;
+      transition: background 0.2s;
+      font-family: inherit;
+      line-height: 1.4;
+    }
+
+    .faq-question:hover {
+      background: #f5f0ff;
+    }
+
+    .faq-question .icon {
+      font-size: 24px;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+      margin-left: 16px;
+      color: #8B5CF6;
+    }
+
+    .faq-item.open .faq-question .icon {
+      transform: rotate(45deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s ease;
+      padding: 0 24px;
+      color: #444;
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+      padding: 0 24px 24px;
+    }
+
+    .faq-answer strong {
+      color: #8B5CF6;
+    }
+
     .cta {
       padding: 80px 0;
       background: linear-gradient(135deg, #1a1a2e, #2d1b69);
@@ -442,7 +531,6 @@
       background: rgba(255,255,255,0.1);
     }
 
-    /* Footer */
     footer {
       background: #1a1a2e;
       color: #888;
@@ -469,9 +557,6 @@
       color: white;
     }
 
-    /* ===== АДАПТИВНОСТЬ ===== */
-
-    /* Планшеты и мобильные (до 768px) */
     @media (max-width: 768px) {
       .hero h1 {
         font-size: 32px;
@@ -503,12 +588,10 @@
         margin-top: 10px;
       }
 
-      /* Показываем бургер */
       .burger {
         display: flex;
       }
 
-      /* Скрываем меню по умолчанию на мобилках */
       .nav-links {
         display: none;
         flex-direction: column;
@@ -539,9 +622,17 @@
         text-align: center;
         padding: 12px;
       }
+
+      .faq-question {
+        font-size: 16px;
+        padding: 16px 18px;
+      }
+
+      .faq-answer {
+        font-size: 15px;
+      }
     }
 
-    /* Очень маленькие экраны (до 480px) */
     @media (max-width: 480px) {
       .hero {
         padding: 60px 0 40px;
@@ -557,7 +648,8 @@
 
       .features h2,
       .prizes h2,
-      .how-it-works h2 {
+      .how-it-works h2,
+      .faq h2 {
         font-size: 26px;
       }
 
@@ -578,14 +670,12 @@
     <div class="container">
       <div class="logo"><a href="/index.html">✦ Backend Boost</a></div>
 
-      <!-- Бургер-кнопка -->
       <button class="burger" id="burgerBtn" aria-label="Меню">
         <span></span>
         <span></span>
         <span></span>
       </button>
 
-      <!-- Навигация -->
       <nav class="nav-links" id="navLinks">
         <a href="#features">О курсе</a>
         <a href="#prizes">Призы</a>
@@ -675,7 +765,7 @@
 
   <section class="how-it-works" id="how-it-works">
     <div class="container">
-      <h2>🚀 Как это работает</h2>
+      <h2>Как это работает?</h2>
       <div class="steps">
         <div class="step">
           <div class="number">1</div>
@@ -701,6 +791,65 @@
     </div>
   </section>
 
+  <section class="faq" id="faq">
+    <div class="container">
+      <h2>Часто задаваемые вопросы</h2>
+      <p class="subtitle">Отвечаем на главное, чтобы ты ни о чем не переживал</p>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Что такое Learn to Earn и как я могу заработать?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p><strong>Learn to Earn</strong> — это наша фишка, взаимствованная из крипто-торговли. Ты проходишь уроки и получаешь баллы (по 10 за каждый). В конце курса три студента с самым высоким рейтингом получают денежные призы: <strong>$300, $150 и $50</strong> из призового фонда. Остальные студенты получают сертификаты, доступ к закрытому чату, портфолио, чат с актуальными вакансиями работодателей и возможность подготовиться к собеседованию.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Сколько стоит курс и что входит в стоимость?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Весь курс стоит <strong>всего $50</strong> единоразово. Ты получаешь доступ к 30 урокам на 3 месяца, практическим заданиям, тестам, таблице лидеров, чату студентов и возможность побороться за призовой фонд. Никаких скрытых платежей.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Что если я передумаю или мне не подойдет курс?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p><strong>У нас прозрачная система возврата.</strong> Ты можешь вернуть 100% денег в течение 7 дней, если <strong>не заходил в личный кабинет</strong> или не открыл ни одного урока. Если ты уже начал обучение, возврат рассчитывается пропорционально пройденным урокам за вычетом фактических расходов. Подробнее читай в разделе <a href="/offer.html" style="color:#8B5CF6; font-weight:600;">Публичная оферта</a>.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Какие способы оплаты доступны?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p>Мы принимаем оплату <strong>на карту</strong> и <strong>криптовалюту USDT</strong> в сети TRC20. Все способы оплаты ты найдешь на странице оплаты после регистрации.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            <span>Смогу ли я совмещать обучение с работой или учебой?</span>
+            <span class="icon">+</span>
+          </button>
+          <div class="faq-answer">
+            <p><strong>Да.</strong> Курс рассчитан на 3 месяца, но ты проходишь уроки в своем темпе. Ты можешь заниматься вечером, в выходные или в любое другое свободное время. Главное — успеть пройти все 30 уроков к финалу.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="cta">
     <div class="container">
       <h2>Готов прокачать бэкенд?</h2>
@@ -715,14 +864,13 @@
     <div class="container">
       <div class="footer-links">
         <a href="/offer.html">Оферта</a>
-        <a href="#">Вопрос-Ответ</a>
+        <a href="#faq">Вопрос-Ответ</a>
         <a href="/login.html">Вход</a>
       </div>
       <p>✦ Backend Boost — обучение с выгодой.</p>
     </div>
   </footer>
 
-  <!-- Скрипт для бургер-меню -->
   <script>
     const burger = document.getElementById('burgerBtn');
     const nav = document.getElementById('navLinks');
@@ -732,12 +880,33 @@
       nav.classList.toggle('open');
     });
 
-    // Закрываем меню при клике на ссылку (для мобильных)
     document.querySelectorAll('.nav-links a').forEach(link => {
       link.addEventListener('click', function() {
         burger.classList.remove('active');
         nav.classList.remove('open');
       });
+    });
+
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', function() {
+        const parent = this.parentElement;
+        const isOpen = parent.classList.contains('open');
+
+        document.querySelectorAll('.faq-item').forEach(item => {
+          item.classList.remove('open');
+        });
+
+        if (!isOpen) {
+          parent.classList.add('open');
+        }
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const firstItem = document.querySelector('.faq-item');
+      if (firstItem) {
+        firstItem.classList.add('open');
+      }
     });
   </script>
 
