@@ -221,11 +221,26 @@
 
     .stream-info {
       background: #f0e6ff;
-      padding: 12px 20px;
+      padding: 14px 24px;
       border-radius: 12px;
       margin-bottom: 20px;
       font-weight: 500;
       color: #2d1b69;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stream-info .stream-name {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .stream-info .stream-details {
+      font-size: 15px;
+      color: #4a3a7a;
     }
 
     .modules h2 {
@@ -461,6 +476,10 @@
       .leaderboard th, .leaderboard td {
         padding: 6px 8px;
       }
+      .stream-info {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
@@ -483,7 +502,10 @@
     <div class="status unpaid" id="paymentStatus">⏳ Загрузка...</div>
   </div>
 
-  <div class="stream-info" id="streamInfo">📚 Старт курса: 5 августа. загрузка...</div>
+  <div class="stream-info" id="streamInfo">
+    <span class="stream-name" id="streamName">Загрузка...</span>
+    <span class="stream-details" id="streamDetails">Старт курса: загрузка...</span>
+  </div>
 
   <div class="payment-banner" id="paymentBanner" style="display:none;">
     <p>💰 Ты еще не оплатил курс. После оплаты откроется доступ ко всем урокам.</p>
@@ -501,7 +523,7 @@
     </div>
     <div class="stat-card">
       <div class="number" id="yourRank">-</div>
-      <div class="label" id="rankLabel">Твое место в рейтинге</div>
+      <div class="label" id="rankLabel">Твое место</div>
     </div>
   </div>
 
@@ -623,6 +645,7 @@
           var profile = result.data;
           isPaid = profile.is_paid || false;
 
+          // Загружаем поток
           return supabaseClient
             .from('streams')
             .select('*')
@@ -634,10 +657,12 @@
                 isCourseStarted = currentStream.course_started || false;
               }
 
+              // Загружаем всех оплативших в этом потоке
               return supabaseClient
                 .from('profiles')
                 .select('*')
                 .eq('stream_id', profile.stream_id)
+                .eq('is_paid', true)
                 .order('total_score', { ascending: false });
             })
             .then(function(profilesResult) {
@@ -650,6 +675,12 @@
           showToast('Ошибка загрузки данных: ' + err.message, 'error');
           return null;
         });
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return 'не установлена';
+      var d = new Date(dateStr);
+      return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
     function renderDashboard(profile) {
@@ -672,7 +703,17 @@
       }
 
       document.getElementById('userScore').textContent = profile.total_score || 0;
-      document.getElementById('streamInfo').textContent = '📚 Поток: ' + (currentStream ? currentStream.name : 'Не назначен');
+
+      // ===== ИНФОРМАЦИЯ О ПОТОКЕ =====
+      if (currentStream) {
+        var paidCount = allProfiles.filter(function(p) { return p.is_paid; }).length;
+        document.getElementById('streamName').textContent = currentStream.name + ' (' + paidCount + '/50)';
+        var startDate = currentStream.start_date ? formatDate(currentStream.start_date) : 'не установлена';
+        document.getElementById('streamDetails').textContent = 'Старт курса: ' + startDate;
+      } else {
+        document.getElementById('streamName').textContent = 'Поток не назначен';
+        document.getElementById('streamDetails').textContent = 'Оплати курс, чтобы попасть в поток';
+      }
 
       var completed = userProgress.filter(function(p) { return p.is_completed; }).length;
       document.getElementById('lessonsCompleted').textContent = completed;
@@ -686,7 +727,7 @@
         var sorted = allProfiles.filter(function(p) { return p.is_paid; }).sort(function(a, b) { return (b.total_score || 0) - (a.total_score || 0); });
         var rank = sorted.findIndex(function(p) { return p.id === currentUser.id; }) + 1;
         document.getElementById('yourRank').textContent = rank > 0 ? '#' + rank : '-';
-        rankLabel.textContent = 'Твое место в рейтинге';
+        rankLabel.textContent = 'Твое место';
       }
 
       renderLeaderboard();
@@ -702,7 +743,7 @@
         });
 
         if (users.length === 0) {
-          container.innerHTML = '<p style="color: #888;">Пока нет зарегистрированных студентов</p>';
+          container.innerHTML = '<p style="color: #888;">Пока нет оплативших студентов в твоем потоке</p>';
         } else {
           var listHtml = '<div style="max-height:300px; overflow-y:auto;"><ul style="list-style:none; padding:0;">';
           users.forEach(function(name) {
