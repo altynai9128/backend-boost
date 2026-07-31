@@ -783,7 +783,7 @@
 
   <section class="faq" id="faq">
     <div class="container">
-      <h2>Часто задаваемые вопросы</h2>
+      <h2>❓ Часто задаваемые вопросы</h2>
       <p class="subtitle">Отвечаем на главное, чтобы ты ни о чем не переживал</p>
 
       <div class="faq-list">
@@ -903,3 +903,30 @@
 
     document.addEventListener('DOMContentLoaded', async function() {
       const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
+      const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
+
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      const { data, error } = await supabaseClient.auth.getSession();
+      if (error) console.error('Ошибка проверки сессии:', error);
+
+      const authLinks = document.getElementById('authLinks');
+      const userLinks = document.getElementById('userLinks');
+      const userNameLink = document.getElementById('userNameLink');
+
+      if (data?.session) {
+        const { data: profile } = await supabaseClient
+          .from('profiles')
+          .select('full_name')
+          .eq('id', data.session.user.id)
+          .single();
+
+        const userName = profile?.full_name || data.session.user.email.split('@')[0] || 'Студент';
+
+        authLinks.style.display = 'none';
+        userLinks.style.display = 'inline';
+        userNameLink.textContent = '👤 ' + userName;
+
+        document.getElementById('logoutBtnMain').addEventListener('click', async function(e) {
+          e.preventDefault();
+          await supabaseClient
