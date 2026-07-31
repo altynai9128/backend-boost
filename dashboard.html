@@ -469,12 +469,12 @@
 
 <div class="main">
   <div class="welcome" id="welcomeBlock">
-    <h1 id="greeting">Привет, 👋</h1>
-    <p id="userEmail">email@example.com</p>
-    <div class="status unpaid" id="paymentStatus">⏳ Ожидает оплаты</div>
+    <h1 id="greeting">Загрузка...</h1>
+    <p id="userEmail">Загрузка...</p>
+    <div class="status unpaid" id="paymentStatus">⏳ Загрузка...</div>
   </div>
 
-  <div class="payment-banner" id="paymentBanner">
+  <div class="payment-banner" id="paymentBanner" style="display:none;">
     <p>💰 Ты еще не оплатил курс. После оплаты откроется доступ ко всем урокам.</p>
     <button class="btn-pay" id="payBtn">Перейти к оплате</button>
   </div>
@@ -510,6 +510,8 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
   const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
@@ -569,7 +571,34 @@
         .select('*')
         .eq('id', currentUser.id)
         .single();
-      if (profErr) throw profErr;
+
+      if (profErr) {
+        if (profErr.code === 'PGRST116') {
+          const newProfile = {
+            id: currentUser.id,
+            email: currentUser.email,
+            full_name: currentUser.user_metadata?.full_name || 'Студент',
+            country: currentUser.user_metadata?.country || 'Не указана',
+            is_paid: false,
+            total_score: 0
+          };
+          const { error: insertErr } = await supabaseClient
+            .from('profiles')
+            .insert([newProfile]);
+          if (insertErr) throw insertErr;
+          isPaid = false;
+          const { data: profiles, error: allProfErr } = await supabaseClient
+            .from('profiles')
+            .select('*')
+            .order('total_score', { ascending: false });
+          if (allProfErr) throw allProfErr;
+          allProfiles = profiles || [];
+          return { profile: newProfile, progress };
+        } else {
+          throw profErr;
+        }
+      }
+
       isPaid = profile.is_paid || false;
 
       const { data: profiles, error: allProfErr } = await supabaseClient
@@ -795,20 +824,18 @@
         window.location.href = '/payment.html';
       });
     }
-  });
 
-  document.addEventListener('DOMContentLoaded', async function() {
-    const user = await checkAuth();
-    if (!user) return;
+    (async function init() {
+      const user = await checkAuth();
+      if (!user) return;
 
-    const result = await loadData();
-    if (result) {
-      renderDashboard(result.profile);
-    }
+      const result = await loadData();
+      if (result) {
+        renderDashboard(result.profile);
+      }
+    })();
   });
 </script>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 </body>
 </html>
