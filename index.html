@@ -864,69 +864,101 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
-    const burger = document.getElementById('burgerBtn');
-    const nav = document.getElementById('navLinks');
-
-    burger.addEventListener('click', function() {
-      this.classList.toggle('active');
-      nav.classList.toggle('open');
-    });
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', function() {
-        burger.classList.remove('active');
-        nav.classList.remove('open');
-      });
-    });
-
-    document.querySelectorAll('.faq-question').forEach(button => {
-      button.addEventListener('click', function() {
-        const parent = this.parentElement;
-        const isOpen = parent.classList.contains('open');
-
-        document.querySelectorAll('.faq-item').forEach(item => {
-          item.classList.remove('open');
-        });
-
-        if (!isOpen) {
-          parent.classList.add('open');
-        }
-      });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-      const firstItem = document.querySelector('.faq-item');
-      if (firstItem) {
-        firstItem.classList.add('open');
-      }
-    });
-
-    document.addEventListener('DOMContentLoaded', async function() {
+    (function() {
       const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
       const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNzdmVmcG9ud2V0Y2dwYmZ4ZXBuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyOTc0NzIsImV4cCI6MjEwMDg3MzQ3Mn0.2tKEk-ssC1ov04mMNQrMGPHRTTDyrnhmjVfCT5lwr0I';
 
       const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-      const { data, error } = await supabaseClient.auth.getSession();
-      if (error) console.error('Ошибка проверки сессии:', error);
+      // Бургер-меню
+      const burger = document.getElementById('burgerBtn');
+      const nav = document.getElementById('navLinks');
 
-      const authLinks = document.getElementById('authLinks');
-      const userLinks = document.getElementById('userLinks');
-      const userNameLink = document.getElementById('userNameLink');
+      if (burger && nav) {
+        burger.addEventListener('click', function() {
+          this.classList.toggle('active');
+          nav.classList.toggle('open');
+        });
 
-      if (data?.session) {
-        const { data: profile } = await supabaseClient
-          .from('profiles')
-          .select('full_name')
-          .eq('id', data.session.user.id)
-          .single();
+        document.querySelectorAll('.nav-links a').forEach(function(link) {
+          link.addEventListener('click', function() {
+            burger.classList.remove('active');
+            nav.classList.remove('open');
+          });
+        });
+      }
 
-        const userName = profile?.full_name || data.session.user.email.split('@')[0] || 'Студент';
+      // Гармошка (FAQ)
+      document.querySelectorAll('.faq-question').forEach(function(button) {
+        button.addEventListener('click', function() {
+          var parent = this.parentElement;
+          var isOpen = parent.classList.contains('open');
 
-        authLinks.style.display = 'none';
-        userLinks.style.display = 'inline';
-        userNameLink.textContent = '👤 ' + userName;
+          document.querySelectorAll('.faq-item').forEach(function(item) {
+            item.classList.remove('open');
+          });
 
-        document.getElementById('logoutBtnMain').addEventListener('click', async function(e) {
+          if (!isOpen) {
+            parent.classList.add('open');
+          }
+        });
+      });
+
+      var firstItem = document.querySelector('.faq-item');
+      if (firstItem) {
+        firstItem.classList.add('open');
+      }
+
+      // Проверка авторизации
+      supabaseClient.auth.getSession().then(function(result) {
+        var data = result.data;
+        var error = result.error;
+
+        if (error) {
+          console.error('Ошибка проверки сессии:', error);
+          return;
+        }
+
+        var authLinks = document.getElementById('authLinks');
+        var userLinks = document.getElementById('userLinks');
+        var userNameLink = document.getElementById('userNameLink');
+
+        if (data && data.session) {
+          supabaseClient
+            .from('profiles')
+            .select('full_name')
+            .eq('id', data.session.user.id)
+            .single()
+            .then(function(profileResult) {
+              var profile = profileResult.data;
+              var userName = (profile && profile.full_name) || data.session.user.email.split('@')[0] || 'Студент';
+
+              if (authLinks) authLinks.style.display = 'none';
+              if (userLinks) userLinks.style.display = 'inline';
+              if (userNameLink) userNameLink.textContent = '👤 ' + userName;
+            })
+            .catch(function(err) {
+              console.error('Ошибка загрузки профиля:', err);
+            });
+        } else {
+          if (authLinks) authLinks.style.display = 'inline';
+          if (userLinks) userLinks.style.display = 'none';
+        }
+      });
+
+      // Кнопка выхода
+      document.addEventListener('click', function(e) {
+        if (e.target && e.target.id === 'logoutBtnMain') {
           e.preventDefault();
-          await supabaseClient
+          supabaseClient.auth.signOut().then(function() {
+            localStorage.clear();
+            sessionStorage.clear();
+            window.location.href = '/index.html';
+          });
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>
