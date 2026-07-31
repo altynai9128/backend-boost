@@ -24,7 +24,6 @@
       padding: 0 20px;
     }
 
-    /* Header */
     header {
       background: white;
       padding: 16px 0;
@@ -45,10 +44,6 @@
     .logo {
       font-size: 24px;
       font-weight: 800;
-      background: linear-gradient(135deg, #8B5CF6, #FF69B4);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
 
     .logo a {
@@ -140,7 +135,6 @@
       transform: rotate(-45deg) translate(5px, -6px);
     }
 
-    /* Hero */
     .hero {
       padding: 100px 0 80px;
       background: linear-gradient(135deg, #faf5ff 0%, #fff5f9 100%);
@@ -189,13 +183,6 @@
       margin-bottom: 20px;
     }
 
-    .hero .guarantee {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #8888aa;
-    }
-
-    /* Features */
     .features {
       padding: 80px 0;
       background: white;
@@ -313,7 +300,6 @@
       color: #666;
     }
 
-    /* For everyone */
     .for-everyone {
       padding: 80px 0;
       background: white;
@@ -356,7 +342,6 @@
       margin-bottom: 8px;
     }
 
-    /* How it works */
     .how-it-works {
       padding: 80px 0;
       background: #faf5ff;
@@ -404,7 +389,6 @@
       font-size: 14px;
     }
 
-    /* ===== FAQ (ГАРМОШКА) ===== */
     .faq {
       padding: 80px 0;
       background: white;
@@ -680,8 +664,14 @@
         <a href="#features">О курсе</a>
         <a href="#prizes">Призы</a>
         <a href="#how-it-works">Как это работает?</a>
-        <a href="/register.html" style="color:#8B5CF6; font-weight:500;">Регистрация</a>
-        <a href="/login.html" class="btn btn-secondary" style="padding: 8px 20px; font-size: 14px;">Войти</a>
+        <span id="authLinks">
+          <a href="/register.html" style="color:#8B5CF6; font-weight:500;">Регистрация</a>
+          <a href="/login.html" class="btn btn-secondary" style="padding: 8px 20px; font-size: 14px;">Войти</a>
+        </span>
+        <span id="userLinks" style="display:none;">
+          <a href="/dashboard.html" id="userNameLink" style="color:#8B5CF6; font-weight:500;"></a>
+          <a href="#" class="btn btn-secondary" style="padding: 8px 20px; font-size: 14px;" id="logoutBtnMain">Выйти</a>
+        </span>
       </nav>
     </div>
   </header>
@@ -765,7 +755,7 @@
 
   <section class="how-it-works" id="how-it-works">
     <div class="container">
-      <h2>Как это работает?</h2>
+      <h2>🚀 Как это работает</h2>
       <div class="steps">
         <div class="step">
           <div class="number">1</div>
@@ -803,7 +793,7 @@
             <span class="icon">+</span>
           </button>
           <div class="faq-answer">
-            <p><strong>Learn to Earn</strong> — это наша фишка, взаимствованная из крипто-торговли. Ты проходишь уроки и получаешь баллы (по 10 за каждый). В конце курса три студента с самым высоким рейтингом получают денежные призы: <strong>$300, $150 и $50</strong> из призового фонда. Остальные студенты получают сертификаты, доступ к закрытому чату, портфолио, чат с актуальными вакансиями работодателей и возможность подготовиться к собеседованию.</p>
+            <p><strong>Learn to Earn</strong> — это наша фишка. Ты проходишь уроки и получаешь баллы (по 10 за каждый). В конце курса три студента с самым высоким рейтингом получают денежные призы: <strong>$300, $150 и $50</strong> из общего призового фонда. Остальные студенты получают сертификаты, доступ к закрытому чату и скидки.</p>
           </div>
         </div>
 
@@ -813,7 +803,7 @@
             <span class="icon">+</span>
           </button>
           <div class="faq-answer">
-            <p>Весь курс стоит <strong>всего $50</strong> единоразово. Ты получаешь доступ к 30 урокам на 3 месяца, практическим заданиям, тестам, таблице лидеров, чату студентов и возможность побороться за призовой фонд. Никаких скрытых платежей.</p>
+            <p>Весь курс стоит <strong>всего $50</strong> единоразово. Ты получаешь доступ к 30 урокам на 3 месяца, практическим заданиям, таблице лидеров, чату студентов и возможность побороться за призовой фонд. Никаких скрытых платежей.</p>
           </div>
         </div>
 
@@ -833,7 +823,7 @@
             <span class="icon">+</span>
           </button>
           <div class="faq-answer">
-            <p>Мы принимаем оплату <strong>на карту</strong> и <strong>криптовалюту USDT</strong> в сети TRC20. Все способы оплаты ты найдешь на странице оплаты после регистрации.</p>
+            <p>Мы принимаем оплату через <strong>ЮMoney</strong> (для пользователей из России) и <strong>криптовалюту USDT</strong> в сети TRC20 (для студентов из Беларуси, Казахстана и других стран). Все реквизиты ты найдешь на странице оплаты после регистрации.</p>
           </div>
         </div>
 
@@ -870,6 +860,8 @@
       <p>✦ Backend Boost — обучение с выгодой.</p>
     </div>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <script>
     const burger = document.getElementById('burgerBtn');
@@ -908,7 +900,6 @@
         firstItem.classList.add('open');
       }
     });
-  </script>
 
-</body>
-</html>
+    document.addEventListener('DOMContentLoaded', async function() {
+      const SUPABASE_URL = 'https://ssvefponwetcgpbfxepn.supabase.co';
