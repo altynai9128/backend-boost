@@ -741,64 +741,39 @@
     }
 
     function renderLeaderboard() {
-  var container = document.getElementById('leaderboardContainer');
+      var container = document.getElementById('leaderboardContainer');
 
-  var sorted = allProfiles.filter(function(p) { return p.is_paid; }).sort(function(a, b) {
-    return (b.total_score || 0) - (a.total_score || 0);
-  });
+      var sorted = allProfiles.filter(function(p) { return p.is_paid; }).sort(function(a, b) {
+        return (b.total_score || 0) - (a.total_score || 0);
+      });
 
-  if (sorted.length === 0) {
-    container.innerHTML = '<p style="color: #888;">Пока нет оплативших студентов в твоем потоке</p>';
-    return;
-  }
+      if (sorted.length === 0) {
+        container.innerHTML = '<p style="color: #888;">Пока нет оплативших студентов в твоем потоке</p>';
+        return;
+      }
 
-  var currentUserIndex = sorted.findIndex(function(p) { return p.id === currentUser.id; });
-  var currentUserData = currentUserIndex !== -1 ? sorted[currentUserIndex] : null;
+      var currentUserIndex = sorted.findIndex(function(p) { return p.id === currentUser.id; });
+      var currentUserData = currentUserIndex !== -1 ? sorted[currentUserIndex] : null;
 
-  if (!isCourseStarted) {
-    var listHtml = '<div style="max-height:400px; overflow-y:auto; border-radius:12px; background:#fafafa; padding:4px 0;">';
-    listHtml += '<ul style="list-style:none; padding:0; margin:0;">';
-    
-    sorted.forEach(function(p) {
-      var isYou = p.id === currentUser.id;
-      var score = p.total_score || 0;
-      
-      listHtml += '<li style="display:flex; justify-content:space-between; align-items:center; padding:10px 16px; border-bottom:1px solid #f0e6ff; ' + 
-        (isYou ? 'background:#f0e6ff; border-radius:8px; font-weight:600;' : '') + '">';
-      listHtml += '<span>' + (p.full_name || 'Аноним') + (isYou ? ' (ты)' : '') + '</span>';
-      listHtml += '<span style="color:#8B5CF6; font-weight:700;">' + score + ' баллов</span>';
-      listHtml += '</li>';
-    });
-    
-    listHtml += '</ul></div>';
-    container.innerHTML = listHtml;
-    return;
-  }
-  var html = '<table><thead><tr><th>#</th><th>Студент</th><th>Баллы</th></tr></thead><tbody>';
-
-  var top3 = sorted.slice(0, 3);
-  var medals = ['🥇', '🥈', '🥉'];
-  top3.forEach(function(p, i) {
-    var isYou = p.id === currentUser.id;
-    html += '<tr class="' + (isYou ? 'you' : '') + '">';
-    html += '<td class="rank top' + (i + 1) + '">' + medals[i] + '</td>';
-    html += '<td>' + (p.full_name || 'Аноним') + (isYou ? ' (ты)' : '') + '</td>';
-    html += '<td>' + (p.total_score || 0) + '</td>';
-    html += '</tr>';
-  });
-
-  if (currentUserData && currentUserIndex >= 3) {
-    html += '<tr class="divider"><td colspan="3" style="padding:8px 0; text-align:center; color:#888; font-size:13px;">···</td></tr>';
-    html += '<tr class="you">';
-    html += '<td class="rank">#' + (currentUserIndex + 1) + '</td>';
-    html += '<td>' + (currentUserData.full_name || 'Аноним') + ' (ты)' + '</td>';
-    html += '<td>' + (currentUserData.total_score || 0) + '</td>';
-    html += '</tr>';
-  }
-
-  html += '</tbody></table>';
-  container.innerHTML = html;
-}
+      if (!isCourseStarted) {
+        var listHtml = '<div style="max-height:400px; overflow-y:auto; border-radius:12px; background:#fafafa; padding:4px 0;">';
+        listHtml += '<ul style="list-style:none; padding:0; margin:0;">';
+        
+        sorted.forEach(function(p) {
+          var isYou = p.id === currentUser.id;
+          var score = p.total_score || 0;
+          
+          listHtml += '<li style="display:flex; justify-content:space-between; align-items:center; padding:10px 16px; border-bottom:1px solid #f0e6ff; ' + 
+            (isYou ? 'background:#f0e6ff; border-radius:8px; font-weight:600;' : '') + '">';
+          listHtml += '<span>' + (p.full_name || 'Аноним') + (isYou ? ' (ты)' : '') + '</span>';
+          listHtml += '<span style="color:#8B5CF6; font-weight:700;">' + score + ' баллов</span>';
+          listHtml += '</li>';
+        });
+        
+        listHtml += '</ul></div>';
+        container.innerHTML = listHtml;
+        return;
+      }
 
       var html = '<table><thead><tr><th>#</th><th>Студент</th><th>Баллы</th></tr></thead><tbody>';
 
@@ -814,7 +789,7 @@
       });
 
       if (currentUserData && currentUserIndex >= 3) {
-        html += '<tr class="divider"><td colspan="3">···</td></tr>';
+        html += '<tr class="divider"><td colspan="3" style="padding:8px 0; text-align:center; color:#888; font-size:13px;">···</td></tr>';
         html += '<tr class="you">';
         html += '<td class="rank">#' + (currentUserIndex + 1) + '</td>';
         html += '<td>' + (currentUserData.full_name || 'Аноним') + ' (ты)' + '</td>';
