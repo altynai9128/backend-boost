@@ -748,7 +748,7 @@
       });
 
       if (sorted.length === 0) {
-        container.innerHTML = '<p style="color: #888;">Пока нет оплативших студентов в твоем потоке</p>';
+        container.innerHTML = '<p style="color: #888;">Станет доступно после старта курса</p>';
         return;
       }
 
@@ -850,7 +850,7 @@
 
     window.completeLesson = function(lessonId, btn) {
       if (!isPaid) {
-        showToast('⚠️ Оплати курс, чтобы открыть уроки', 'error');
+        showToast('⚠️ Оплати курс и дождись старта обучения, чтобы открыть уроки', 'error');
         return;
       }
       if (!isCourseStarted) {
