@@ -483,7 +483,7 @@
     <div class="status unpaid" id="paymentStatus">⏳ Загрузка...</div>
   </div>
 
-  <div class="stream-info" id="streamInfo">📚 Поток: загрузка...</div>
+  <div class="stream-info" id="streamInfo">📚 Старт курса: 5 августа. загрузка...</div>
 
   <div class="payment-banner" id="paymentBanner" style="display:none;">
     <p>💰 Ты еще не оплатил курс. После оплаты откроется доступ ко всем урокам.</p>
@@ -501,7 +501,7 @@
     </div>
     <div class="stat-card">
       <div class="number" id="yourRank">-</div>
-      <div class="label" id="rankLabel">Твое место</div>
+      <div class="label" id="rankLabel">Твое место в рейтинге</div>
     </div>
   </div>
 
@@ -686,7 +686,7 @@
         var sorted = allProfiles.filter(function(p) { return p.is_paid; }).sort(function(a, b) { return (b.total_score || 0) - (a.total_score || 0); });
         var rank = sorted.findIndex(function(p) { return p.id === currentUser.id; }) + 1;
         document.getElementById('yourRank').textContent = rank > 0 ? '#' + rank : '-';
-        rankLabel.textContent = 'Твое место';
+        rankLabel.textContent = 'Твое место в рейтинге';
       }
 
       renderLeaderboard();
