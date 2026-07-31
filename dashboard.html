@@ -84,6 +84,11 @@
       background: #fee2e2;
     }
 
+    .btn-logout:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
     .main {
       max-width: 1200px;
       margin: 0 auto;
@@ -354,7 +359,6 @@
       margin-bottom: 12px;
     }
 
-    /* Payment banner */
     .payment-banner {
       background: #fef3c7;
       border: 1px solid #f59e0b;
@@ -585,7 +589,8 @@
   }
 
   function renderDashboard(profile) {
-    document.getElementById('greeting').textContent = 'Привет, ' + (profile.full_name || 'Студент') + ' 👋';
+    const userName = profile.full_name || 'Студент';
+    document.getElementById('greeting').textContent = 'Привет, ' + userName + '! 👋';
     document.getElementById('userEmail').textContent = currentUser.email;
 
     const statusEl = document.getElementById('paymentStatus');
@@ -751,23 +756,45 @@
 
   document.addEventListener('DOMContentLoaded', function() {
     const logoutBtn = document.getElementById('logoutBtn');
+    
     if (logoutBtn) {
       logoutBtn.addEventListener('click', async function(e) {
         e.preventDefault();
+        
         try {
+          logoutBtn.textContent = '⏳ Выход...';
+          logoutBtn.disabled = true;
+          
           const { error } = await supabaseClient.auth.signOut();
           if (error) throw error;
-          localStorage.removeItem('sb-user-email');
-          window.location.href = '/login.html';
+          
+          localStorage.clear();
+          sessionStorage.clear();
+          
+          await new Promise(resolve => setTimeout(resolve, 300));
+          
+          window.location.replace('/login.html');
+          
         } catch (err) {
+          console.error('Ошибка выхода:', err);
           showToast('Ошибка выхода: ' + err.message, 'error');
+          
+          logoutBtn.textContent = 'Выйти';
+          logoutBtn.disabled = false;
+          
+          setTimeout(() => {
+            window.location.replace('/login.html');
+          }, 500);
         }
       });
     }
 
-    document.getElementById('payBtn').addEventListener('click', function() {
-      window.location.href = '/payment.html';
-    });
+    const payBtn = document.getElementById('payBtn');
+    if (payBtn) {
+      payBtn.addEventListener('click', function() {
+        window.location.href = '/payment.html';
+      });
+    }
   });
 
   document.addEventListener('DOMContentLoaded', async function() {
