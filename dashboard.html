@@ -655,7 +655,7 @@
     const top = sorted.slice(0, 10);
 
     if (top.length === 0) {
-      container.innerHTML = '<p style="color: #888;">Пока нет активных студентов</p>';
+      container.innerHTML = '<p style="color: #888;">Курс еще не начался. Таблица лидеров станет доступна сразу после старта!</p>';
       return;
     }
 
@@ -802,7 +802,7 @@
           
           await new Promise(resolve => setTimeout(resolve, 300));
           
-          window.location.replace('/login.html');
+          window.location.replace('/index.html');
           
         } catch (err) {
           console.error('Ошибка выхода:', err);
@@ -812,7 +812,7 @@
           logoutBtn.disabled = false;
           
           setTimeout(() => {
-            window.location.replace('/index.html');
+            window.location.replace('/login.html');
           }, 500);
         }
       });
